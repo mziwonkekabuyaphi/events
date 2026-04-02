@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Rands Venue Management OS</title>
 
+<!-- ========== FAVICON ========== -->
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="shortcut icon" href="/favicon.png">
+
 <!-- ========== PWA / APPLE TOUCH ICONS & WEB APP MANIFEST ========== -->
 <!-- Custom app icon for Safari (saved to home screen) - using rands-logo.png -->
 <link rel="apple-touch-icon" href="images/rands-logo.png" sizes="180x180">
@@ -3699,6 +3703,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const loginForm = document.getElementById('loginForm');
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
+  const errorMessageDiv = document.getElementById('errorMessage');
+  const errorTextSpan = document.getElementById('errorText');
   const body = document.body;
   
   if (loginForm) {
@@ -3706,10 +3712,14 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
+      
+      // Check credentials for both Admin and Staff
       if ((username === 'Admin' && password === 'randsadmin') || (username === 'Staff' && password === 'randscapetown')) {
         body.classList.remove('login-mode');
+        errorMessageDiv.classList.add('hidden');
       } else {
-        alert('Invalid credentials');
+        errorTextSpan.textContent = 'Invalid username or password';
+        errorMessageDiv.classList.remove('hidden');
       }
     });
   }
