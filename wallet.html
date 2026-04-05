@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Rands Wallet | Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
     <style>
-        /* (All existing styles remain exactly as in the original file) */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background: #f4f6fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .app-container { max-width: 500px; width: 100%; margin: 0 auto; background: #ffffff; border-radius: 40px; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08); overflow: hidden; position: relative; }
+        
+        /* =================== HEADER =================== */
         #movableHeaderGroup { position: sticky; top: 0; z-index: 100; background: #fff; transition: transform 0.3s ease; will-change: transform; }
         .header-hidden { transform: translateY(-100%); }
         .app-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: white; border-bottom: 1px solid #eff3f8; }
@@ -24,7 +25,7 @@
         .welcome-greeting i { color: #E30613; font-size: 1rem; }
         .welcome-greeting span { background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); background-clip: text; -webkit-background-clip: text; color: transparent; font-weight: 800; }
         .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
-        .app-main { height: auto; max-height: 80vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
+        .app-main { height: auto; max-height: 70vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
         .top-quick-bar, .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
         .top-quick-item, .quick-item { flex: 1; text-align: center; padding: 6px 4px; font-size: 0.68rem; font-weight: 600; color: #2c3f5c; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 40px; transition: 0.2s; }
         .top-quick-item:active, .quick-item:active { background: #f0f2f5; transform: scale(0.96); }
@@ -42,21 +43,8 @@
         .card-flipper, .cards-card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; transform-origin: center center; will-change: transform; backface-visibility: hidden; }
         .card-wrapper.flipped .card-flipper, .cards-card-wrapper.flipped .cards-card-flipper { transform: rotateY(180deg); }
         .card-front, .card-back, .cards-card-front, .cards-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 28px; box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.2); box-sizing: border-box; }
-        .card-front, .cards-card-front { position: relative; overflow: hidden; padding: 6px 18px 14px 18px; transform: rotateY(0deg); display: flex; flex-direction: column; color: white; transition: all 0.3s ease; }
-        .card-theme-1 { background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); }
-        .card-theme-2 { background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); }
-        .card-theme-3 { background: linear-gradient(135deg, #134e5e 0%, #71b280 100%); }
-        .card-theme-4 { background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); }
-        .card-theme-5 { background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%); }
-        .card-theme-6 { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); }
-        .card-theme-7 { background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); }
-        .card-theme-8 { background: linear-gradient(135deg, #7f00ff 0%, #e100ff 100%); }
-        .card-theme-9 { background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%); }
-        .card-theme-10 { background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%); }
-        .card-theme-11 { background: linear-gradient(135deg, #0f2027 0%, #203a43 0%, #2c5364 100%); }
-        .card-theme-12 { background: linear-gradient(135deg, #c31432 0%, #240b36 100%); }
+        .card-front, .cards-card-front { position: relative; overflow: hidden; padding: 6px 18px 14px 18px; transform: rotateY(0deg); display: flex; flex-direction: column; color: white; transition: all 0.3s ease; background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); }
         .card-front::before, .cards-card-front::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(105deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 0; }
-        .card-front .geo-pattern, .cards-card-front .geo-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(45deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(-45deg, rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none; z-index: 0; }
         .card-front .shimmer, .cards-card-front .shimmer { position: absolute; top: -50%; left: -100%; width: 200%; height: 200%; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.2) 45%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.2) 55%, transparent 70%); transform: rotate(25deg); animation: shimmerSweep 10s infinite cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 0; }
         @keyframes shimmerSweep { 0% { transform: translateX(-40%) rotate(25deg); } 100% { transform: translateX(40%) rotate(25deg); } }
         .card-front .radial-glow, .cards-card-front .radial-glow { position: absolute; top: -30%; left: -30%; width: 160%; height: 160%; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2), transparent 70%); pointer-events: none; z-index: 0; opacity: 0.6; }
@@ -68,7 +56,7 @@
         .tagline-rfid-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .card-tagline, .cards-card-tagline { font-family: 'Playfair Display', serif; font-size: 12px; color: rgba(255,255,255,0.85); }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(227,6,19,0.5); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); } 70% { box-shadow: 0 0 0 10px rgba(227,6,19,0); text-shadow: 0 0 8px rgba(227,6,19,0.8); transform: scale(1.02); } 100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); } }
-        .rfid-icon, .cards-rfid-icon { color: white; font-size: 1.2rem; background: rgba(227,6,19,0.4); width: 34px; height: 34px; border-radius: 30px; display: flex; align-items: center; justify-content: center; animation: pulseGlow 1.8s infinite; backdrop-filter: blur(2px); border: 1px solid rgba(227,6,19,0.6); transition: background 0.3s ease, border 0.3s ease; }
+        .rfid-icon, .cards-rfid-icon { color: white; font-size: 1.2rem; background: rgba(227,6,19,0.4); width: 34px; height: 34px; border-radius: 30px; display: flex; align-items: center; justify-content: center; animation: pulseGlow 1.8s infinite; backdrop-filter: blur(2px); border: 1px solid rgba(227,6,19,0.6); }
         .chip-lines { width: 42px; height: 34px; background: radial-gradient(ellipse at 30% 35%, #f3e5ab, #d4af37); border-radius: 4px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,200,0.8), inset 0 0 0 1px rgba(255,255,200,0.6); flex-shrink: 0; overflow: hidden; }
         .chip-lines::before { content: ""; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 0.5px solid rgba(0,0,0,0.3); border-radius: 2px; pointer-events: none; }
         .chip-lines .lines-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 1; }
@@ -245,13 +233,12 @@
                     </div>
                 </div>
                 <div id="blockedBanner" style="display:none;" class="blocked-warning"><i class="fas fa-ban"></i> Your account has been blocked.</div>
-                
                 <div class="card-section">
                     <div class="section-header"><h3>✦ RANDS VIRTUAL CARD</h3></div>
                     <div class="card-wrapper" id="cardFlipWrapper">
                         <div class="card-flipper">
-                            <div class="card-front card-theme-1">
-                                <div class="geo-pattern"></div><div class="shimmer"></div><div class="radial-glow"></div>
+                            <div class="card-front">
+                                <div class="shimmer"></div><div class="radial-glow"></div>
                                 <div class="top-section">
                                     <div class="card-logo">RANDS DIGITAL WALLET</div>
                                     <div class="tagline-rfid-row">
@@ -264,28 +251,19 @@
                                     <div class="card-number" id="displayCardNumber">---- ---- ---- ----</div>
                                 </div>
                                 <div class="bottom-section">
-                                    <div class="expiry-mastercard-row">
-                                        <div class="expiry-text">EXP <span id="displayExpiry">--/--</span></div>
-                                        <div class="mastercard-text">Mastercard</div>
-                                    </div>
-                                    <div class="name-icon-row">
-                                        <div class="card-holder-name" id="displayCardHolder">---</div>
-                                        <div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div>
-                                    </div>
+                                    <div class="expiry-mastercard-row"><div class="expiry-text">EXP <span id="displayExpiry">--/--</span></div><div class="mastercard-text">Mastercard</div></div>
+                                    <div class="name-icon-row"><div class="card-holder-name" id="displayCardHolder">---</div><div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div></div>
                                 </div>
                             </div>
                             <div class="card-back">
                                 <div class="card-back-barcode"><canvas id="cardBackBarcodeCanvas"></canvas></div>
                                 <div class="signature-area" id="cardSignature"></div>
-                                <div class="card-bottom-row">
-                                    <div class="cvv-area"><div class="cvv" id="displayCvv">---</div></div>
-                                </div>
+                                <div class="card-bottom-row"><div class="cvv-area"><div class="cvv">CVV: <span id="displayCvv">---</span></div></div></div>
                             </div>
                         </div>
                     </div>
                     <div class="flip-hint">👆 tap card to flip</div>
                 </div>
-                
                 <div class="action-buttons-row">
                     <button class="action-btn send-primary" id="sendMoneyBtn"><i class="fas fa-paper-plane"></i> Send</button>
                     <button class="action-btn request-secondary" id="requestPaymentBtn"><i class="fas fa-qrcode"></i> Request</button>
@@ -296,7 +274,6 @@
                     <div class="top-quick-item" id="topAddMoneyBtn"><i class="fas fa-plus-circle"></i> Add Money</div>
                     <div class="top-quick-item" id="topQueueBtn"><i class="fas fa-clock"></i> Queue</div>
                 </div>
-                
                 <div class="queue-section">
                     <div class="queue-title"><i class="fas fa-users"></i> Virtual Queue</div>
                     <div class="queue-cards">
@@ -316,19 +293,20 @@
             </div>
             <!-- TRANSACTIONS TAB -->
             <div id="transactionsTab" class="tab-content"><div class="ticket-module"><div class="transactions-tabs"><div class="transactions-tab active" data-panel="history">History</div><div class="transactions-tab" data-panel="statement">Statement</div></div><div id="historyPanel" class="transactions-panel active"><div id="fullTransactionList" class="tx-list"></div></div><div id="statementPanel" class="transactions-panel"><div class="statement-header"><h4>Monthly Summary</h4><button class="download-statement-btn" id="downloadAllStatementBtn">Download All</button></div><div id="statementContent"></div></div></div></div>
-            <!-- TICKETS TAB (UPDATED with dynamic events and user tickets) -->
+            <!-- TICKETS TAB -->
             <div id="cardsTab" class="tab-content">
                 <div class="cards-horizontal">
                     <div class="card-scroll-item"><div class="event-ticket-card"><div style="font-size:0.7rem;">🎟️ RANDS EVENT TICKET</div><div style="font-weight:700; margin:10px 0;">RANDS SUMMER FEST 2026</div><div>📍 Rands Cape Town • 15 Dec 2026</div><div class="card-mini-actions" style="margin-top: auto;"><button class="mini-btn" id="showEventQRBtn"><i class="fas fa-qrcode"></i> Show</button><button class="mini-btn" id="downloadEventTicketBtn"><i class="fas fa-download"></i> Download</button><button class="mini-btn" id="shareEventTicketBtn"><i class="fab fa-whatsapp"></i> Share</button></div></div></div>
                     <div class="card-scroll-item">
                         <div class="cards-card-wrapper" id="cardsCardFlipWrapper">
                             <div class="cards-card-flipper">
-                                <div class="cards-card-front card-theme-1"><div class="geo-pattern"></div><div class="shimmer"></div><div class="radial-glow"></div>
+                                <div class="cards-card-front">
+                                    <div class="shimmer"></div><div class="radial-glow"></div>
                                     <div class="top-section"><div class="cards-card-logo">RANDS DIGITAL WALLET</div><div class="tagline-rfid-row"><div class="cards-card-tagline">#See Your Vibe</div><div class="cards-rfid-icon"><i class="fas fa-rss"></i></div></div></div>
                                     <div class="chip-number-wrapper"><div class="chip-lines"><div class="metal-line"></div><div class="contacts"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="lines-overlay"></div></div><div class="cards-card-number" id="cardsDisplayCardNumber">---- ---- ---- ----</div></div>
                                     <div class="bottom-section"><div class="expiry-mastercard-row"><div class="expiry-text">EXP <span id="cardsDisplayExpiry">--/--</span></div><div class="mastercard-text">Mastercard</div></div><div class="name-icon-row"><div class="cards-card-name" id="cardsDisplayCardHolder">---</div><div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div></div></div>
                                 </div>
-                                <div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv" id="cardsDisplayCvv">---</div></div></div></div>
+                                <div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv">CVV: <span id="cardsDisplayCvv">---</span></div></div></div></div>
                             </div>
                         </div>
                         <div class="cards-flip-hint">👆 tap card to flip</div>
@@ -380,13 +358,12 @@
         </div>
     </div>
 
-    <!-- MODALS (existing + ticket purchase modal) -->
+    <!-- MODALS -->
     <div id="boozeLockerModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;"><i class="fas fa-lock"></i> My Booze Locker</h3><div id="lockerModalContent" style="max-height:60vh; overflow-y:auto;"><div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeBoozeLockerModalBtn">Close</button><button class="modal-btn btn-confirm" id="storeMoreItemsBtn" style="background:#ff9800;">Store More Items</button></div></div></div>
     <div id="receivePaymentModal" class="modal"><div class="modal-card"><h3>Receive Payment</h3><div class="receive-qr-container"><div id="receiveQrCode"></div><div class="receive-account-id"><span id="receiveAccountIdText"></span><button class="copy-id-btn" id="copyAccountIdBtn">Copy</button></div><div class="receive-instruction">Scan QR with any Rands Wallet to send money.</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeReceiveModalBtn">Close</button></div></div></div>
     <div id="sendMoneyModal" class="modal"><div class="modal-card"><h3>Send Money</h3><input type="text" id="recipientAccountId" class="input-field" placeholder="Recipient Phone Number"><input type="number" id="sendAmount" class="amount-field" placeholder="Amount (R)"><input type="password" id="senderPin" class="input-field" placeholder="Your 4-digit PIN" maxlength="4"><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeSendMoneyBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmSendMoneyBtn">Send Money</button></div></div></div>
-    <div id="addMoneyModal" class="modal"><div class="modal-card"><h3>Add Money</h3><input type="number" id="addAmountInput" class="amount-field" placeholder="Amount (R)"><div class="amount-chip-group"><button class="amount-chip" onclick="setAddAmount(100)">R100</button><button class="amount-chip" onclick="setAddAmount(500)">R500</button><button class="amount-chip" onclick="setAddAmount(1000)">R1000</button></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeAddMoneyBtn">Cancel</button></div></div></div>
+    <div id="addMoneyModal" class="modal"><div class="modal-card"><h3>Add Money</h3><input type="number" id="addAmountInput" class="amount-field" placeholder="Amount (R)"><div class="amount-chip-group"><button class="amount-chip" data-amount="100">R100</button><button class="amount-chip" data-amount="500">R500</button><button class="amount-chip" data-amount="1000">R1000</button></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeAddMoneyBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmAddMoneyBtn">Add Money</button></div></div></div>
     <div id="paymentApprovalModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;">💰 Payment Request</h3><div id="approvalDetails" style="margin:20px 0; text-align:center;"><div style="background:#f8fafc; border-radius:20px; padding:20px;"><p style="font-size:1.5rem; font-weight:800; color:#E30613;" id="approvalAmount">R0.00</p><p style="font-size:0.9rem; color:#64748b; margin-top:10px;">From: <strong>Rands Kiosk</strong></p><p style="font-size:0.85rem; color:#475569; margin-top:8px;" id="approvalDesc">-</p></div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="rejectPaymentBtn">Reject</button><button class="modal-btn btn-confirm" id="acceptPaymentBtn">Accept Payment</button></div></div></div>
-    <!-- New: Ticket Purchase Modal -->
     <div id="ticketPurchaseModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;"><i class="fas fa-ticket-alt"></i> Purchase Ticket</h3><div id="purchaseDetails" style="margin:15px 0;"></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closePurchaseModalBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmPurchaseBtn">Confirm Purchase</button></div></div></div>
     <div id="globalToast" class="toast-msg"></div>
 </div>
@@ -400,7 +377,7 @@
     const PAYMENT_REQUESTS_KEY = 'rands_payment_requests';
     const LOCKERS_KEY = 'rands_lockers';
     const PENDING_UNLOCK_KEY = 'rands_pending_unlocks';
-    const EVENTS_STORAGE_KEY = 'rands_events';  // same as Event-management.html
+    const EVENTS_STORAGE_KEY = 'rands_events';
     const USER_TICKETS_PREFIX = 'user_tickets_';
     
     let accounts = [], currentAccountId = null;
@@ -410,42 +387,37 @@
     let vvipBands = {};
     let lockers = [];
     let pendingUnlocks = [];
-    let managedEvents = [];     // events from Event-management.html
-    let userTickets = [];       // tickets bought by current user
+    let managedEvents = [];
+    let userTickets = [];
     
     function showToastMsg(msg) { let t = document.getElementById('globalToast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
     function saveAccounts() { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts)); }
     function getCurrentAccount() { return accounts.find(a => a.id === currentAccountId); }
     function addTransaction(desc, amount) { if (!transactionsHistory[currentAccountId]) transactionsHistory[currentAccountId] = []; transactionsHistory[currentAccountId].unshift({ desc, amount, date: new Date().toISOString().slice(0,10) }); localStorage.setItem('rands_transactions', JSON.stringify(transactionsHistory)); updateAllUI(); }
     
-    // Load events from management system
-    function loadManagedEvents() {
-        const stored = localStorage.getItem(EVENTS_STORAGE_KEY);
-        if (stored) {
-            managedEvents = JSON.parse(stored);
-        } else {
-            managedEvents = [];
-        }
+    function loadAccounts() { 
+        const stored = localStorage.getItem(ACCOUNTS_KEY); 
+        if (stored) accounts = JSON.parse(stored);
+        else accounts = [{ id: "0635713652", name: "Mziwonke KaBuyaphi", phone: "0635713652", balance: 5000, cardNumber: "4532 1234 5678 9012", cvv: "123", expiry: "12/28", pin: "1989", status: "Active", cardTheme: "card-theme-1", selfie: null, verified: true }]; 
+        saveAccounts(); 
     }
     
-    // Save user tickets to localStorage
-    function saveUserTickets() {
-        if (currentAccountId) {
-            localStorage.setItem(USER_TICKETS_PREFIX + currentAccountId, JSON.stringify(userTickets));
-        }
+    function loadManagedEvents() {
+        const stored = localStorage.getItem(EVENTS_STORAGE_KEY);
+        managedEvents = stored ? JSON.parse(stored) : [];
     }
     
     function loadUserTickets() {
         if (currentAccountId) {
             const stored = localStorage.getItem(USER_TICKETS_PREFIX + currentAccountId);
-            if (stored) userTickets = JSON.parse(stored);
-            else userTickets = [];
-        } else {
-            userTickets = [];
-        }
+            userTickets = stored ? JSON.parse(stored) : [];
+        } else userTickets = [];
     }
     
-    // Update event sold count in managedEvents and persist
+    function saveUserTickets() {
+        if (currentAccountId) localStorage.setItem(USER_TICKETS_PREFIX + currentAccountId, JSON.stringify(userTickets));
+    }
+    
     function updateEventSoldCount(eventId, ticketType, delta) {
         const eventIndex = managedEvents.findIndex(e => e.id === eventId);
         if (eventIndex !== -1) {
@@ -462,7 +434,6 @@
         return false;
     }
     
-    // Purchase ticket
     function purchaseTicket(eventId, ticketType, quantity, totalPrice) {
         const event = managedEvents.find(e => e.id === eventId);
         if (!event) { showToastMsg("Event not found"); return false; }
@@ -472,13 +443,10 @@
         if (quantity > remaining) { showToastMsg(`Only ${remaining} tickets left`); return false; }
         const account = getCurrentAccount();
         if (account.balance < totalPrice) { showToastMsg("Insufficient balance"); return false; }
-        // Deduct balance
         account.balance -= totalPrice;
         saveAccounts();
         addTransaction(`Purchased ${quantity}x ${event.name} (${ticketType})`, -totalPrice);
-        // Update event sold count
         if (updateEventSoldCount(eventId, ticketType, quantity)) {
-            // Add to user tickets
             const ticketRecord = {
                 id: 'tkt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
                 eventId: event.id,
@@ -500,15 +468,13 @@
             showToastMsg(`Success! ${quantity}x ${ticketType} ticket(s) purchased.`);
             return true;
         } else {
-            // rollback balance if update fails
             account.balance += totalPrice;
             saveAccounts();
-            showToastMsg("Ticket sale failed. Capacity may be exceeded.");
+            showToastMsg("Ticket sale failed.");
             return false;
         }
     }
     
-    // Render "My Tickets" section
     function renderMyTickets() {
         const container = document.getElementById('myTicketsListArea');
         const badge = document.getElementById('ticketsTabCountBadge');
@@ -541,26 +507,22 @@
         `).join('');
     }
     
-    function showTicketQR(ticketId) {
+    window.showTicketQR = function(ticketId) {
         const ticket = userTickets.find(t => t.id === ticketId);
-        if (ticket) {
-            alert(`QR Code for ${ticket.eventName}\nData: ${ticket.qrData}\n(Full QR generation would appear here)`);
-            // In a real app, you'd open a modal with QR code.
-        }
-    }
+        if (ticket) alert(`QR Code for ${ticket.eventName}\nData: ${ticket.qrData}`);
+    };
     
-    // Render event shop from managedEvents
     function renderEventShop() {
         const container = document.getElementById('eventShopListArea');
         if (!container) return;
         if (!managedEvents.length) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events available. Check back later!</div>';
+            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events available.</div>';
             return;
         }
         const now = new Date();
         const upcomingEvents = managedEvents.filter(e => new Date(e.date) >= now && e.status !== 'ended');
         if (upcomingEvents.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events at the moment.</div>';
+            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events.</div>';
             return;
         }
         container.innerHTML = upcomingEvents.map(event => {
@@ -587,14 +549,11 @@
     }
     
     let pendingPurchase = null;
-    function initiatePurchase(eventId, ticketType, price) {
+    window.initiatePurchase = function(eventId, ticketType, price) {
         const event = managedEvents.find(e => e.id === eventId);
         if (!event) return;
         const tt = event.ticketTypes[ticketType];
-        if (!tt || tt.sold >= tt.capacity) {
-            showToastMsg("Ticket type sold out");
-            return;
-        }
+        if (!tt || tt.sold >= tt.capacity) { showToastMsg("Ticket type sold out"); return; }
         pendingPurchase = { eventId, ticketType, price, eventName: event.name };
         document.getElementById('purchaseDetails').innerHTML = `
             <p><strong>${escapeHtml(event.name)}</strong></p>
@@ -612,7 +571,7 @@
             });
         }
         document.getElementById('ticketPurchaseModal').classList.add('active');
-    }
+    };
     
     document.getElementById('confirmPurchaseBtn')?.addEventListener('click', () => {
         if (!pendingPurchase) return;
@@ -628,13 +587,6 @@
         pendingPurchase = null;
     });
     
-    // --- existing helper functions (abbreviated for brevity, but keep all original core functions) ---
-    function loadAccounts() { 
-        const stored = localStorage.getItem(ACCOUNTS_KEY); 
-        if (stored) accounts = JSON.parse(stored);
-        else accounts = [{ id: "0635713652", name: "Mziwonke KaBuyaphi", phone: "0635713652", balance: 5000, cardNumber: "4532 1234 5678 9012", cvv: "123", expiry: "12/28", pin: "1989", status: "Active", cardTheme: "card-theme-1", selfie: null, verified: true }]; 
-        saveAccounts(); 
-    }
     function loadLockers() { const stored = localStorage.getItem(LOCKERS_KEY); if (stored) lockers = JSON.parse(stored); else { lockers = [{ id: 1, lockerNumber: 1, customer: "Mziwonke KaBuyaphi", phone: "0635713652", pin: "1989", items: [{ name: "Heineken 6-pack", price: 89.99 }], itemsText: "Heineken 6-pack", status: "Occupied", balance: 89.99, registrationTime: new Date().toISOString() }, { id: 2, lockerNumber: 2, customer: "", phone: "", pin: "", items: [], itemsText: "", status: "Available", balance: 0, registrationTime: null }]; localStorage.setItem(LOCKERS_KEY, JSON.stringify(lockers)); } }
     function loadPendingUnlocks() { const stored = localStorage.getItem(PENDING_UNLOCK_KEY); pendingUnlocks = stored ? JSON.parse(stored) : []; updatePendingIndicator(); }
     function updatePendingIndicator() { if (!currentAccountId) return; const hasPending = pendingUnlocks.some(req => req.phone === currentAccountId); const indicator = document.getElementById('pendingRequestIndicator'); if (indicator) indicator.style.display = hasPending ? 'inline-flex' : 'none'; }
@@ -691,9 +643,6 @@
         if (tabId === 'cards') { renderMyTickets(); renderEventShop(); }
     }
     
-    function setAddAmount(amt) { document.getElementById("addAmountInput").value = amt; }
-    function switchToPOS() { window.open('Box-office.html', '_blank'); }
-    
     function initHeaderScrollBehavior() {
         const header = document.getElementById('movableHeaderGroup');
         const container = document.getElementById('appMain');
@@ -719,9 +668,10 @@
             window.location.href = 'login.html'; 
             return;
         }
-        // Attach event listeners (original ones)
+        
+        // Attach all event listeners
         document.getElementById("logoutHeaderBtn")?.addEventListener("click", logout);
-        document.getElementById("posModeBtn")?.addEventListener("click", switchToPOS);
+        document.getElementById("posModeBtn")?.addEventListener("click", () => window.open('Box-office.html', '_blank'));
         document.getElementById("profileBtn")?.addEventListener("click", () => { if(currentAccountId) switchTab('profile'); });
         document.getElementById("editProfileBtn")?.addEventListener("click", () => showToastMsg("Edit profile coming soon"));
         document.getElementById("securitySettingsBtn")?.addEventListener("click", () => showToastMsg("Security settings coming soon"));
@@ -734,7 +684,16 @@
         document.getElementById("closeSendMoneyBtn")?.addEventListener("click", () => document.getElementById("sendMoneyModal").classList.remove("active"));
         document.getElementById("balanceAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("topAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
-        document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => { let amt = parseFloat(document.getElementById("addAmountInput").value); if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } } document.getElementById("addMoneyModal").classList.remove("active"); document.getElementById("addAmountInput").value = ""; });
+        document.querySelectorAll(".amount-chip").forEach(chip => {
+            chip.addEventListener("click", () => { document.getElementById("addAmountInput").value = chip.getAttribute("data-amount"); });
+        });
+        document.getElementById("confirmAddMoneyBtn")?.addEventListener("click", () => {
+            let amt = parseFloat(document.getElementById("addAmountInput").value);
+            if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } }
+            document.getElementById("addMoneyModal").classList.remove("active");
+            document.getElementById("addAmountInput").value = "";
+        });
+        document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.remove("active"));
         document.getElementById("requestPaymentBtn")?.addEventListener("click", () => { if(!currentAccountId) { window.location.href = 'login.html'; return; } document.getElementById("receiveAccountIdText").innerText = currentAccountId; document.getElementById("receivePaymentModal").classList.add("active"); const receiveQrDiv = document.getElementById("receiveQrCode"); receiveQrDiv.innerHTML = ""; new QRCode(receiveQrDiv, { text: currentAccountId, width: 150, height: 150, colorDark: "#E30613" }); });
         document.getElementById("closeReceiveModalBtn")?.addEventListener("click", () => document.getElementById("receivePaymentModal").classList.remove("active"));
         document.getElementById("copyAccountIdBtn")?.addEventListener("click", () => { navigator.clipboard.writeText(currentAccountId || ""); showToastMsg("Account ID copied!"); });
@@ -760,9 +719,11 @@
         document.getElementById("issueNewCardBtn")?.addEventListener("click", () => showToastMsg("New card"));
         document.getElementById("downloadAllStatementBtn")?.addEventListener("click", () => showToastMsg("Statement downloaded"));
         document.getElementById("payTabPayNowBtn")?.addEventListener("click", () => { if(currentAccountId) { showToastMsg("🔐 Opening payment scanner..."); setTimeout(() => { showToastMsg("💰 Payment of R150.00 requested"); let payments = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); payments.push({ id: Date.now(), targetAccount: currentAccountId, amount: 150, description: "Payment to Rands Kiosk", status: 'pending', type: 'payment' }); localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(payments)); }, 500); } else window.location.href = 'login.html'; });
+        
         setInterval(() => { if(currentAccountId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const pending = requests.filter(r => r.targetAccount === currentAccountId && r.status === 'pending' && r.type !== 'locker_unlock'); if(pending.length && !document.getElementById("paymentApprovalModal").classList.contains('active')) { const latest = pending[pending.length-1]; document.getElementById("approvalAmount").innerHTML = `R${latest.amount.toFixed(2)}`; document.getElementById("approvalDesc").innerHTML = latest.description; document.getElementById("paymentApprovalModal").setAttribute('data-request-id', latest.id); document.getElementById("paymentApprovalModal").classList.add('active'); } } }, 3000);
         setInterval(() => { if(currentAccountId) { loadLockers(); loadPendingUnlocks(); loadManagedEvents(); loadUserTickets(); updateAllUI(); } }, 5000);
         if(currentAccountId) switchTab('home');
+        
         document.getElementById("acceptPaymentBtn")?.addEventListener("click", () => { const modal = document.getElementById("paymentApprovalModal"); const requestId = modal.getAttribute('data-request-id'); if(requestId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const req = requests.find(r => r.id == requestId); if(req && getCurrentAccount().balance >= req.amount) { getCurrentAccount().balance -= req.amount; saveAccounts(); addTransaction(req.description, -req.amount); req.status = 'completed'; localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(requests)); showToastMsg("Payment approved"); modal.classList.remove("active"); updateAllUI(); } else showToastMsg("Insufficient balance"); } });
         document.getElementById("rejectPaymentBtn")?.addEventListener("click", () => { const modal = document.getElementById("paymentApprovalModal"); const requestId = modal.getAttribute('data-request-id'); if(requestId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const req = requests.find(r => r.id == requestId); if(req) { req.status = 'rejected'; localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(requests)); showToastMsg("Payment rejected"); } modal.classList.remove("active"); } });
     }
