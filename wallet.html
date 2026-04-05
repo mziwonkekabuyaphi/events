@@ -8,12 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        /* ========== YOUR ORIGINAL STYLES (unchanged, beautiful) ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background: #f4f6fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .app-container { max-width: 500px; width: 100%; margin: 0 auto; background: #ffffff; border-radius: 40px; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08); overflow: hidden; position: relative; }
         
-        /* =================== HEADER =================== */
         #movableHeaderGroup { position: sticky; top: 0; z-index: 100; background: #fff; transition: transform 0.3s ease; will-change: transform; }
         .header-hidden { transform: translateY(-100%); }
         .app-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: white; border-bottom: 1px solid #eff3f8; }
@@ -25,7 +26,7 @@
         .welcome-greeting i { color: #E30613; font-size: 1rem; }
         .welcome-greeting span { background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); background-clip: text; -webkit-background-clip: text; color: transparent; font-weight: 800; }
         .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
-        .app-main { height: auto; max-height: 70vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
+        .app-main { height: auto; max-height: 80vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
         .top-quick-bar, .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
         .top-quick-item, .quick-item { flex: 1; text-align: center; padding: 6px 4px; font-size: 0.68rem; font-weight: 600; color: #2c3f5c; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 40px; transition: 0.2s; }
         .top-quick-item:active, .quick-item:active { background: #f0f2f5; transform: scale(0.96); }
@@ -43,7 +44,8 @@
         .card-flipper, .cards-card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; transform-origin: center center; will-change: transform; backface-visibility: hidden; }
         .card-wrapper.flipped .card-flipper, .cards-card-wrapper.flipped .cards-card-flipper { transform: rotateY(180deg); }
         .card-front, .card-back, .cards-card-front, .cards-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 28px; box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.2); box-sizing: border-box; }
-        .card-front, .cards-card-front { position: relative; overflow: hidden; padding: 6px 18px 14px 18px; transform: rotateY(0deg); display: flex; flex-direction: column; color: white; transition: all 0.3s ease; background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); }
+        .card-front, .cards-card-front { position: relative; overflow: hidden; padding: 6px 18px 14px 18px; transform: rotateY(0deg); display: flex; flex-direction: column; color: white; transition: all 0.3s ease; }
+        .card-theme-1 { background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); }
         .card-front::before, .cards-card-front::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(105deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 0; }
         .card-front .shimmer, .cards-card-front .shimmer { position: absolute; top: -50%; left: -100%; width: 200%; height: 200%; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.2) 45%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.2) 55%, transparent 70%); transform: rotate(25deg); animation: shimmerSweep 10s infinite cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 0; }
         @keyframes shimmerSweep { 0% { transform: translateX(-40%) rotate(25deg); } 100% { transform: translateX(40%) rotate(25deg); } }
@@ -79,6 +81,7 @@
         .card-bottom-row, .cards-card-bottom-row { display: flex; justify-content: flex-end; align-items: center; margin-top: 8px; gap: 12px; }
         .cvv, .cards-cvv { background: rgba(0,0,0,0.05); padding: 4px 12px; border-radius: 30px; font-family: monospace; font-weight: bold; color: #1e2a3a; font-size: 0.8rem; }
         .flip-hint, .cards-flip-hint { font-family: 'Playfair Display', serif; font-size: 0.55rem; text-align: center; color: #999; margin-top: 8px; font-weight: 500; }
+        
         @media (max-width: 480px) {
             .card-number, .cards-card-number { font-size: 1.2rem; letter-spacing: 1.5px; }
             .chip-lines { width: 36px; height: 29px; }
@@ -93,6 +96,7 @@
             .expiry-text { font-size: 0.5rem; }
             .signature-area { font-size: 0.7rem; }
         }
+        
         .action-buttons-row { display: flex; gap: 14px; margin: 16px 24px 12px; }
         .action-btn { flex: 1; border: none; padding: 14px 6px; border-radius: 60px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         .action-btn:active { transform: scale(0.96); }
@@ -128,7 +132,10 @@
         .card-mini-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .card-mini-actions .mini-btn { background: rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 40px; font-size: 0.7rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
         .event-ticket-card .mini-btn { background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3); }
-        .bottom-tab-bar { position: sticky; bottom: 0; z-index: 100; background: #fff; box-shadow: 0 -2px 6px rgba(0,0,0,0.1); border-top: 1px solid #edf2f8; padding: 6px 12px 18px; display: flex; justify-content: space-between; }
+        
+        .bottom-tab-bar {
+            position: sticky; bottom: 0; z-index: 100; background: #fff; box-shadow: 0 -2px 6px rgba(0,0,0,0.1); border-top: 1px solid #edf2f8; padding: 6px 12px 18px; display: flex; justify-content: space-between;
+        }
         .tab-nav { flex: 1; text-align: center; cursor: pointer; padding: 4px 0; border-radius: 40px; }
         .tab-nav .tab-icon { font-size: 1.3rem; color: #94a3b8; }
         .tab-nav .tab-label { font-size: 0.6rem; font-weight: 500; color: #7e8b9f; margin-top: 2px; }
@@ -170,7 +177,7 @@
         .event-shop-title { font-weight: 700; color: #dc2626; font-size: 1rem; }
         .event-shop-date { font-size: 0.7rem; color: #64748b; margin: 4px 0; }
         .event-ticket-prices { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
-        .price-tag { background: #fef2f2; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; color: #dc2626; }
+        .price-tag { background: #fef2f2; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; color: #dc2626; cursor: pointer; }
         .buy-ticket-btn { background: #dc2626; color: white; border: none; padding: 6px 16px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; cursor: pointer; margin-top: 8px; width: 100%; }
         .vvip-band-card { background: linear-gradient(135deg, #1a1a1a, #0f0f0f); border-radius: 24px; padding: 20px; margin: 16px; border: 2px solid #E30613; text-align: center; }
         .vvip-band-number { font-family: monospace; font-size: 24px; font-weight: 800; color: #E30613; letter-spacing: 3px; background: #2a2a2a; padding: 8px 16px; border-radius: 40px; display: inline-block; margin: 10px 0; }
@@ -233,11 +240,12 @@
                     </div>
                 </div>
                 <div id="blockedBanner" style="display:none;" class="blocked-warning"><i class="fas fa-ban"></i> Your account has been blocked.</div>
+                
                 <div class="card-section">
                     <div class="section-header"><h3>✦ RANDS VIRTUAL CARD</h3></div>
                     <div class="card-wrapper" id="cardFlipWrapper">
                         <div class="card-flipper">
-                            <div class="card-front">
+                            <div class="card-front card-theme-1">
                                 <div class="shimmer"></div><div class="radial-glow"></div>
                                 <div class="top-section">
                                     <div class="card-logo">RANDS DIGITAL WALLET</div>
@@ -258,12 +266,13 @@
                             <div class="card-back">
                                 <div class="card-back-barcode"><canvas id="cardBackBarcodeCanvas"></canvas></div>
                                 <div class="signature-area" id="cardSignature"></div>
-                                <div class="card-bottom-row"><div class="cvv-area"><div class="cvv">CVV: <span id="displayCvv">---</span></div></div></div>
+                                <div class="card-bottom-row"><div class="cvv-area"><div class="cvv" id="displayCvv">---</div></div></div>
                             </div>
                         </div>
                     </div>
                     <div class="flip-hint">👆 tap card to flip</div>
                 </div>
+                
                 <div class="action-buttons-row">
                     <button class="action-btn send-primary" id="sendMoneyBtn"><i class="fas fa-paper-plane"></i> Send</button>
                     <button class="action-btn request-secondary" id="requestPaymentBtn"><i class="fas fa-qrcode"></i> Request</button>
@@ -274,11 +283,12 @@
                     <div class="top-quick-item" id="topAddMoneyBtn"><i class="fas fa-plus-circle"></i> Add Money</div>
                     <div class="top-quick-item" id="topQueueBtn"><i class="fas fa-clock"></i> Queue</div>
                 </div>
+                
                 <div class="queue-section">
                     <div class="queue-title"><i class="fas fa-users"></i> Virtual Queue</div>
                     <div class="queue-cards">
-                        <div class="queue-card"><h4><i class="fas fa-brain"></i> Rands Smart Queue</h4><div class="queue-stats" id="smartQueueStats">Queue length: 0</div><div class="queue-position" id="smartQueuePosition">Not in queue</div><button class="join-queue-btn" id="joinSmartQueueBtn">Join Queue</button></div>
-                        <div class="queue-card"><h4><i class="fas fa-drumstick-bite"></i> Butcher Queue</h4><div class="queue-stats" id="butcherQueueStats">Queue length: 0</div><div class="queue-position" id="butcherQueuePosition">Not in queue</div><button class="join-queue-btn" id="joinButcherQueueBtn">Join Queue</button></div>
+                        <div class="queue-card" id="queueSmartCard"><h4><i class="fas fa-brain"></i> Rands Smart Queue</h4><div class="queue-stats" id="smartQueueStats">Queue length: 0</div><div class="queue-position" id="smartQueuePosition">Not in queue</div><button class="join-queue-btn" id="joinSmartQueueBtn">Join Queue</button></div>
+                        <div class="queue-card" id="queueButcherCard"><h4><i class="fas fa-drumstick-bite"></i> Butcher Queue</h4><div class="queue-stats" id="butcherQueueStats">Queue length: 0</div><div class="queue-position" id="butcherQueuePosition">Not in queue</div><button class="join-queue-btn" id="joinButcherQueueBtn">Join Queue</button></div>
                     </div>
                 </div>
             </div>
@@ -293,20 +303,19 @@
             </div>
             <!-- TRANSACTIONS TAB -->
             <div id="transactionsTab" class="tab-content"><div class="ticket-module"><div class="transactions-tabs"><div class="transactions-tab active" data-panel="history">History</div><div class="transactions-tab" data-panel="statement">Statement</div></div><div id="historyPanel" class="transactions-panel active"><div id="fullTransactionList" class="tx-list"></div></div><div id="statementPanel" class="transactions-panel"><div class="statement-header"><h4>Monthly Summary</h4><button class="download-statement-btn" id="downloadAllStatementBtn">Download All</button></div><div id="statementContent"></div></div></div></div>
-            <!-- TICKETS TAB -->
+            <!-- TICKETS TAB (UPDATED: now shows events from admin) -->
             <div id="cardsTab" class="tab-content">
                 <div class="cards-horizontal">
                     <div class="card-scroll-item"><div class="event-ticket-card"><div style="font-size:0.7rem;">🎟️ RANDS EVENT TICKET</div><div style="font-weight:700; margin:10px 0;">RANDS SUMMER FEST 2026</div><div>📍 Rands Cape Town • 15 Dec 2026</div><div class="card-mini-actions" style="margin-top: auto;"><button class="mini-btn" id="showEventQRBtn"><i class="fas fa-qrcode"></i> Show</button><button class="mini-btn" id="downloadEventTicketBtn"><i class="fas fa-download"></i> Download</button><button class="mini-btn" id="shareEventTicketBtn"><i class="fab fa-whatsapp"></i> Share</button></div></div></div>
                     <div class="card-scroll-item">
                         <div class="cards-card-wrapper" id="cardsCardFlipWrapper">
                             <div class="cards-card-flipper">
-                                <div class="cards-card-front">
-                                    <div class="shimmer"></div><div class="radial-glow"></div>
+                                <div class="cards-card-front card-theme-1"><div class="shimmer"></div><div class="radial-glow"></div>
                                     <div class="top-section"><div class="cards-card-logo">RANDS DIGITAL WALLET</div><div class="tagline-rfid-row"><div class="cards-card-tagline">#See Your Vibe</div><div class="cards-rfid-icon"><i class="fas fa-rss"></i></div></div></div>
                                     <div class="chip-number-wrapper"><div class="chip-lines"><div class="metal-line"></div><div class="contacts"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="lines-overlay"></div></div><div class="cards-card-number" id="cardsDisplayCardNumber">---- ---- ---- ----</div></div>
                                     <div class="bottom-section"><div class="expiry-mastercard-row"><div class="expiry-text">EXP <span id="cardsDisplayExpiry">--/--</span></div><div class="mastercard-text">Mastercard</div></div><div class="name-icon-row"><div class="cards-card-name" id="cardsDisplayCardHolder">---</div><div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div></div></div>
                                 </div>
-                                <div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv">CVV: <span id="cardsDisplayCvv">---</span></div></div></div></div>
+                                <div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv" id="cardsDisplayCvv">---</div></div></div></div>
                             </div>
                         </div>
                         <div class="cards-flip-hint">👆 tap card to flip</div>
@@ -314,7 +323,10 @@
                     </div>
                 </div>
                 <div class="ticket-module"><div class="section-title"><span>🎟️ My Tickets</span><span id="ticketsTabCountBadge">0</span></div><div id="myTicketsListArea" style="padding: 0 16px 16px 16px;"></div></div>
-                <div class="ticket-module"><div class="section-title"><span>🛍️ Available Events</span></div><div id="eventShopListArea" style="padding: 0 16px 16px 16px;"></div></div>
+                <div class="ticket-module">
+                    <div class="section-title"><span>🛍️ Available Events</span><button id="refreshEventsBtn" style="background:#E30613; color:white; border:none; padding:4px 12px; border-radius:20px; font-size:0.7rem;"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <div id="eventShopListArea" style="padding: 0 16px 16px 16px;"></div>
+                </div>
             </div>
             <!-- PROFILE TAB -->
             <div id="profileTab" class="tab-content">
@@ -362,8 +374,9 @@
     <div id="boozeLockerModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;"><i class="fas fa-lock"></i> My Booze Locker</h3><div id="lockerModalContent" style="max-height:60vh; overflow-y:auto;"><div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeBoozeLockerModalBtn">Close</button><button class="modal-btn btn-confirm" id="storeMoreItemsBtn" style="background:#ff9800;">Store More Items</button></div></div></div>
     <div id="receivePaymentModal" class="modal"><div class="modal-card"><h3>Receive Payment</h3><div class="receive-qr-container"><div id="receiveQrCode"></div><div class="receive-account-id"><span id="receiveAccountIdText"></span><button class="copy-id-btn" id="copyAccountIdBtn">Copy</button></div><div class="receive-instruction">Scan QR with any Rands Wallet to send money.</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeReceiveModalBtn">Close</button></div></div></div>
     <div id="sendMoneyModal" class="modal"><div class="modal-card"><h3>Send Money</h3><input type="text" id="recipientAccountId" class="input-field" placeholder="Recipient Phone Number"><input type="number" id="sendAmount" class="amount-field" placeholder="Amount (R)"><input type="password" id="senderPin" class="input-field" placeholder="Your 4-digit PIN" maxlength="4"><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeSendMoneyBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmSendMoneyBtn">Send Money</button></div></div></div>
-    <div id="addMoneyModal" class="modal"><div class="modal-card"><h3>Add Money</h3><input type="number" id="addAmountInput" class="amount-field" placeholder="Amount (R)"><div class="amount-chip-group"><button class="amount-chip" data-amount="100">R100</button><button class="amount-chip" data-amount="500">R500</button><button class="amount-chip" data-amount="1000">R1000</button></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeAddMoneyBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmAddMoneyBtn">Add Money</button></div></div></div>
+    <div id="addMoneyModal" class="modal"><div class="modal-card"><h3>Add Money</h3><input type="number" id="addAmountInput" class="amount-field" placeholder="Amount (R)"><div class="amount-chip-group"><button class="amount-chip" onclick="setAddAmount(100)">R100</button><button class="amount-chip" onclick="setAddAmount(500)">R500</button><button class="amount-chip" onclick="setAddAmount(1000)">R1000</button></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeAddMoneyBtn">Cancel</button></div></div></div>
     <div id="paymentApprovalModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;">💰 Payment Request</h3><div id="approvalDetails" style="margin:20px 0; text-align:center;"><div style="background:#f8fafc; border-radius:20px; padding:20px;"><p style="font-size:1.5rem; font-weight:800; color:#E30613;" id="approvalAmount">R0.00</p><p style="font-size:0.9rem; color:#64748b; margin-top:10px;">From: <strong>Rands Kiosk</strong></p><p style="font-size:0.85rem; color:#475569; margin-top:8px;" id="approvalDesc">-</p></div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="rejectPaymentBtn">Reject</button><button class="modal-btn btn-confirm" id="acceptPaymentBtn">Accept Payment</button></div></div></div>
+    <!-- Ticket Purchase Modal -->
     <div id="ticketPurchaseModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;"><i class="fas fa-ticket-alt"></i> Purchase Ticket</h3><div id="purchaseDetails" style="margin:15px 0;"></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closePurchaseModalBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmPurchaseBtn">Confirm Purchase</button></div></div></div>
     <div id="globalToast" class="toast-msg"></div>
 </div>
@@ -372,17 +385,15 @@
     // ========== STORAGE KEYS ==========
     const ACCOUNTS_KEY = 'rands_accounts_v2';
     const VVIP_BANDS_KEY = 'vvip_bands';
-    const TICKETS_KEY = 'rands_tickets';
     const QUEUES_KEY = 'rands_queues';
     const PAYMENT_REQUESTS_KEY = 'rands_payment_requests';
     const LOCKERS_KEY = 'rands_lockers';
     const PENDING_UNLOCK_KEY = 'rands_pending_unlocks';
-    const EVENTS_STORAGE_KEY = 'rands_events';
+    const EVENTS_STORAGE_KEY = 'rands_events';  // same as Event-management.html
     const USER_TICKETS_PREFIX = 'user_tickets_';
     
     let accounts = [], currentAccountId = null;
     let transactionsHistory = {};
-    let tickets = [];
     let queues = { "Rands Smart Queue": [], "Butcher Queue": [] };
     let vvipBands = {};
     let lockers = [];
@@ -402,9 +413,18 @@
         saveAccounts(); 
     }
     
+    // Load events from admin system (Event-management.html)
     function loadManagedEvents() {
         const stored = localStorage.getItem(EVENTS_STORAGE_KEY);
-        managedEvents = stored ? JSON.parse(stored) : [];
+        if (stored) {
+            managedEvents = JSON.parse(stored);
+            console.log(`✅ Loaded ${managedEvents.length} events from admin`);
+        } else {
+            managedEvents = [];
+            console.log("No events found in localStorage");
+        }
+        // Also update any existing event sold counts from user tickets? Not needed for display.
+        renderEventShop(); // refresh display
     }
     
     function loadUserTickets() {
@@ -412,12 +432,14 @@
             const stored = localStorage.getItem(USER_TICKETS_PREFIX + currentAccountId);
             userTickets = stored ? JSON.parse(stored) : [];
         } else userTickets = [];
+        renderMyTickets();
     }
     
     function saveUserTickets() {
         if (currentAccountId) localStorage.setItem(USER_TICKETS_PREFIX + currentAccountId, JSON.stringify(userTickets));
     }
     
+    // Update event sold count in managedEvents after purchase
     function updateEventSoldCount(eventId, ticketType, delta) {
         const eventIndex = managedEvents.findIndex(e => e.id === eventId);
         if (eventIndex !== -1) {
@@ -434,6 +456,7 @@
         return false;
     }
     
+    // Purchase ticket logic
     function purchaseTicket(eventId, ticketType, quantity, totalPrice) {
         const event = managedEvents.find(e => e.id === eventId);
         if (!event) { showToastMsg("Event not found"); return false; }
@@ -443,10 +466,13 @@
         if (quantity > remaining) { showToastMsg(`Only ${remaining} tickets left`); return false; }
         const account = getCurrentAccount();
         if (account.balance < totalPrice) { showToastMsg("Insufficient balance"); return false; }
+        // Deduct balance
         account.balance -= totalPrice;
         saveAccounts();
         addTransaction(`Purchased ${quantity}x ${event.name} (${ticketType})`, -totalPrice);
+        // Update event sold count
         if (updateEventSoldCount(eventId, ticketType, quantity)) {
+            // Add to user tickets
             const ticketRecord = {
                 id: 'tkt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
                 eventId: event.id,
@@ -464,17 +490,19 @@
             userTickets.push(ticketRecord);
             saveUserTickets();
             renderMyTickets();
-            renderEventShop();
+            renderEventShop();  // update available counts
             showToastMsg(`Success! ${quantity}x ${ticketType} ticket(s) purchased.`);
             return true;
         } else {
+            // rollback balance
             account.balance += totalPrice;
             saveAccounts();
-            showToastMsg("Ticket sale failed.");
+            showToastMsg("Ticket sale failed. Capacity may be exceeded.");
             return false;
         }
     }
     
+    // Render "My Tickets"
     function renderMyTickets() {
         const container = document.getElementById('myTicketsListArea');
         const badge = document.getElementById('ticketsTabCountBadge');
@@ -509,30 +537,37 @@
     
     window.showTicketQR = function(ticketId) {
         const ticket = userTickets.find(t => t.id === ticketId);
-        if (ticket) alert(`QR Code for ${ticket.eventName}\nData: ${ticket.qrData}`);
+        if (ticket) {
+            alert(`🎫 Ticket QR Code\nEvent: ${ticket.eventName}\nData: ${ticket.qrData}\n(Full QR would display here)`);
+        }
     };
     
+    // Render event shop from managedEvents
     function renderEventShop() {
         const container = document.getElementById('eventShopListArea');
         if (!container) return;
         if (!managedEvents.length) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events available.</div>';
+            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events created yet. Go to Event Management to create one.</div>';
             return;
         }
         const now = new Date();
-        const upcomingEvents = managedEvents.filter(e => new Date(e.date) >= now && e.status !== 'ended');
+        const upcomingEvents = managedEvents.filter(e => {
+            // Only show if not ended and date is today or future
+            const eventDate = new Date(e.date);
+            return e.status !== 'ended' && eventDate >= now;
+        });
         if (upcomingEvents.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events.</div>';
+            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events at the moment.</div>';
             return;
         }
         container.innerHTML = upcomingEvents.map(event => {
             const types = ['earlyBird', 'general', 'vip'];
-            const typeLabels = { earlyBird: 'Early Bird', general: 'General Admission', vip: 'VIP Experience' };
+            const typeLabels = { earlyBird: '🎟️ Early Bird', general: '👥 General Admission', vip: '👑 VIP Experience' };
             const priceButtons = types.map(t => {
                 const tt = event.ticketTypes[t];
                 if (!tt) return '';
                 const remaining = tt.capacity - tt.sold;
-                if (remaining <= 0) return `<span class="price-tag" style="background:#e2e8f0; color:#666;">${typeLabels[t]} Sold Out</span>`;
+                if (remaining <= 0) return `<span class="price-tag" style="background:#e2e8f0; color:#666; cursor:default;">${typeLabels[t]} Sold Out</span>`;
                 return `<button class="price-tag" onclick="initiatePurchase('${event.id}', '${t}', ${tt.price})">${typeLabels[t]} - R${formatPrice(tt.price)} (${remaining} left)</button>`;
             }).join('');
             const bannerStyle = event.imageData ? `background-image: url(${event.imageData}); background-size: cover; background-position: center;` : '';
@@ -554,7 +589,7 @@
         if (!event) return;
         const tt = event.ticketTypes[ticketType];
         if (!tt || tt.sold >= tt.capacity) { showToastMsg("Ticket type sold out"); return; }
-        pendingPurchase = { eventId, ticketType, price, eventName: event.name };
+        pendingPurchase = { eventId, ticketType, price, eventName: event.name, maxQty: tt.capacity - tt.sold };
         document.getElementById('purchaseDetails').innerHTML = `
             <p><strong>${escapeHtml(event.name)}</strong></p>
             <p>Ticket: ${ticketType}</p>
@@ -587,6 +622,13 @@
         pendingPurchase = null;
     });
     
+    // Refresh events button
+    document.getElementById('refreshEventsBtn')?.addEventListener('click', () => {
+        loadManagedEvents();
+        showToastMsg("Events refreshed");
+    });
+    
+    // ========== REST OF YOUR ORIGINAL FUNCTIONS (loadLockers, sendMoney, etc.) ==========
     function loadLockers() { const stored = localStorage.getItem(LOCKERS_KEY); if (stored) lockers = JSON.parse(stored); else { lockers = [{ id: 1, lockerNumber: 1, customer: "Mziwonke KaBuyaphi", phone: "0635713652", pin: "1989", items: [{ name: "Heineken 6-pack", price: 89.99 }], itemsText: "Heineken 6-pack", status: "Occupied", balance: 89.99, registrationTime: new Date().toISOString() }, { id: 2, lockerNumber: 2, customer: "", phone: "", pin: "", items: [], itemsText: "", status: "Available", balance: 0, registrationTime: null }]; localStorage.setItem(LOCKERS_KEY, JSON.stringify(lockers)); } }
     function loadPendingUnlocks() { const stored = localStorage.getItem(PENDING_UNLOCK_KEY); pendingUnlocks = stored ? JSON.parse(stored) : []; updatePendingIndicator(); }
     function updatePendingIndicator() { if (!currentAccountId) return; const hasPending = pendingUnlocks.some(req => req.phone === currentAccountId); const indicator = document.getElementById('pendingRequestIndicator'); if (indicator) indicator.style.display = hasPending ? 'inline-flex' : 'none'; }
@@ -629,7 +671,7 @@
         else { const band = { bandId: `VVIP-${acc.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}-${Math.floor(Math.random() * 10000)}`, accountId: acc.id, accountName: acc.name, status: "Active" }; vvipBands[acc.id] = band; localStorage.setItem(VVIP_BANDS_KEY, JSON.stringify(vvipBands)); document.getElementById('vvipBandNumber').textContent = band.bandId; document.getElementById('bandIdDisplay').textContent = band.bandId; document.getElementById('bandWalletName').textContent = acc.name; }
         const qrContainer = document.getElementById('vvipBandQR'); if (qrContainer) { qrContainer.innerHTML = ""; new QRCode(qrContainer, { text: `VVIP:${vvipBands[acc.id].bandId}|${acc.id}|${acc.name}`, width: 120, height: 120, colorDark: "#E30613" }); }
         renderMyTickets();
-        renderEventShop();
+        renderEventShop();  // ensure events show
     }
     
     function switchTab(tabId) {
@@ -640,8 +682,15 @@
         document.querySelector(`.tab-nav[data-tab="${tabId}"]`)?.classList.add('active');
         if (tabId === 'pay') { generateBarcode(); generateQRCode(); }
         if (tabId === 'profile') { updateProfileTab(); }
-        if (tabId === 'cards') { renderMyTickets(); renderEventShop(); }
+        if (tabId === 'cards') { loadManagedEvents(); renderMyTickets(); renderEventShop(); }
     }
+    
+    // Global function for amount chips
+    window.setAddAmount = function(amt) {
+        document.getElementById("addAmountInput").value = amt;
+    };
+    
+    function switchToPOS() { window.open('Box-office.html', '_blank'); }
     
     function initHeaderScrollBehavior() {
         const header = document.getElementById('movableHeaderGroup');
@@ -657,11 +706,12 @@
     }
     
     function init() {
-        loadAccounts(); loadLockers(); loadPendingUnlocks(); loadManagedEvents();
+        loadAccounts(); loadLockers(); loadPendingUnlocks();
         let saved = localStorage.getItem('rands_current_account');
         if (saved && accounts.find(a => a.id === saved)) { 
             currentAccountId = saved; 
             loadUserTickets();
+            loadManagedEvents();  // load events from admin
             updateAllUI();
             initHeaderScrollBehavior();
         } else { 
@@ -669,9 +719,9 @@
             return;
         }
         
-        // Attach all event listeners
+        // Attach event listeners (all original ones)
         document.getElementById("logoutHeaderBtn")?.addEventListener("click", logout);
-        document.getElementById("posModeBtn")?.addEventListener("click", () => window.open('Box-office.html', '_blank'));
+        document.getElementById("posModeBtn")?.addEventListener("click", switchToPOS);
         document.getElementById("profileBtn")?.addEventListener("click", () => { if(currentAccountId) switchTab('profile'); });
         document.getElementById("editProfileBtn")?.addEventListener("click", () => showToastMsg("Edit profile coming soon"));
         document.getElementById("securitySettingsBtn")?.addEventListener("click", () => showToastMsg("Security settings coming soon"));
@@ -684,16 +734,7 @@
         document.getElementById("closeSendMoneyBtn")?.addEventListener("click", () => document.getElementById("sendMoneyModal").classList.remove("active"));
         document.getElementById("balanceAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("topAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
-        document.querySelectorAll(".amount-chip").forEach(chip => {
-            chip.addEventListener("click", () => { document.getElementById("addAmountInput").value = chip.getAttribute("data-amount"); });
-        });
-        document.getElementById("confirmAddMoneyBtn")?.addEventListener("click", () => {
-            let amt = parseFloat(document.getElementById("addAmountInput").value);
-            if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } }
-            document.getElementById("addMoneyModal").classList.remove("active");
-            document.getElementById("addAmountInput").value = "";
-        });
-        document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.remove("active"));
+        document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => { let amt = parseFloat(document.getElementById("addAmountInput").value); if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } } document.getElementById("addMoneyModal").classList.remove("active"); document.getElementById("addAmountInput").value = ""; });
         document.getElementById("requestPaymentBtn")?.addEventListener("click", () => { if(!currentAccountId) { window.location.href = 'login.html'; return; } document.getElementById("receiveAccountIdText").innerText = currentAccountId; document.getElementById("receivePaymentModal").classList.add("active"); const receiveQrDiv = document.getElementById("receiveQrCode"); receiveQrDiv.innerHTML = ""; new QRCode(receiveQrDiv, { text: currentAccountId, width: 150, height: 150, colorDark: "#E30613" }); });
         document.getElementById("closeReceiveModalBtn")?.addEventListener("click", () => document.getElementById("receivePaymentModal").classList.remove("active"));
         document.getElementById("copyAccountIdBtn")?.addEventListener("click", () => { navigator.clipboard.writeText(currentAccountId || ""); showToastMsg("Account ID copied!"); });
@@ -742,7 +783,7 @@
         modal.classList.add('active');
     }
     
-    function formatDate(dateString) { if (!dateString) return ''; return new Date(dateString).toLocaleDateString('en-ZA', { year:'numeric', month:'short', day:'numeric' }); }
+    function formatDate(dateString) { if (!dateString) return ''; return new Date(dateString).toLocaleDateString('en-ZA', { year:'numeric', month:'long', day:'numeric' }); }
     function formatPrice(p) { return p.toLocaleString('en-ZA', { minimumFractionDigits:2 }); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
     
