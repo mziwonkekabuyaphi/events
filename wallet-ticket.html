@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Rands Wallet | My Events & Tickets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Rands Wallet | Events & Tickets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -13,35 +13,25 @@
         body { font-family: 'Inter', sans-serif; background: #f4f6fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .app-container { max-width: 500px; width: 100%; margin: 0 auto; background: #ffffff; border-radius: 40px; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08); overflow: hidden; position: relative; }
         
-        /* Header */
-        .app-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: white; border-bottom: 1px solid #eff3f8; }
-        .logo h1 { font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #E30613, #9f0110); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .header-icons { display: flex; gap: 12px; }
-        .header-icon { width: 40px; height: 40px; background: #f7f9fd; border-radius: 30px; display: inline-flex; align-items: center; justify-content: center; color: #E30613; font-size: 1.1rem; cursor: pointer; }
-        .header-icon:active { transform: scale(0.94); }
-        
-        .welcome-banner { background: linear-gradient(135deg, #E30613, #b0020e); margin: 16px 20px; padding: 20px; border-radius: 28px; color: white; }
-        .welcome-text { font-size: 0.8rem; opacity: 0.9; }
-        .customer-name { font-size: 1.3rem; font-weight: 700; margin-top: 4px; }
-        .balance-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; }
-        .balance-label { font-size: 0.7rem; opacity: 0.8; }
-        .balance-amount { font-size: 1.8rem; font-weight: 800; }
-        .top-up-btn { background: rgba(255,255,255,0.2); border: none; padding: 6px 14px; border-radius: 40px; color: white; font-size: 0.7rem; cursor: pointer; }
-        
-        .app-main { height: auto; max-height: 75vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
+        .app-main { height: auto; max-height: 85vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
         
         /* Tab Bar */
-        .tab-bar { display: flex; background: white; border-bottom: 1px solid #eff3f8; padding: 0 20px; gap: 20px; }
+        .tab-bar { display: flex; background: white; border-bottom: 1px solid #eff3f8; padding: 0 20px; gap: 20px; margin-top: 8px; }
         .tab { text-align: center; padding: 14px 0; font-weight: 600; font-size: 0.85rem; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; flex: 1; }
         .tab.active { color: #E30613; border-bottom-color: #E30613; }
         .tab-panel { display: none; padding: 16px 0 24px; }
         .tab-panel.active { display: block; animation: fadeSlide 0.2s ease; }
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* Balance Card */
+        .balance-card { background: linear-gradient(135deg, #E30613, #9f0110); margin: 16px 20px; padding: 20px; border-radius: 28px; color: white; }
+        .balance-label { font-size: 0.7rem; opacity: 0.9; letter-spacing: 0.5px; }
+        .balance-amount { font-size: 1.8rem; font-weight: 800; margin-top: 4px; }
+        .top-up-btn { background: rgba(255,255,255,0.2); border: none; padding: 6px 14px; border-radius: 40px; color: white; font-size: 0.7rem; cursor: pointer; margin-top: 8px; }
+        
         /* Event Cards */
         .event-card { background: white; border-radius: 24px; margin: 12px 16px; overflow: hidden; border: 1px solid #eef2f8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .event-banner { height: 120px; background: linear-gradient(135deg, #E30613, #9f0110); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; position: relative; }
-        .event-banner.event-dark { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        .event-banner { height: 120px; background: linear-gradient(135deg, #E30613, #9f0110); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; position: relative; background-size: cover; background-position: center; }
         .event-banner i { filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)); }
         .event-info { padding: 16px; }
         .event-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
@@ -51,7 +41,7 @@
         .ticket-type-btn:active { transform: scale(0.96); }
         .ticket-type-btn.sold-out { opacity: 0.5; cursor: not-allowed; background: #e2e8f0; color: #64748b; }
         
-        /* ========== PLAIN RED TICKET CARD ========== */
+        /* Plain Red Ticket Card */
         .my-ticket-card {
             background: white;
             border-radius: 20px;
@@ -63,7 +53,6 @@
             position: relative;
         }
         
-        /* Red ticket header with icon */
         .ticket-red-header {
             background: #E30613;
             padding: 14px 16px;
@@ -72,75 +61,20 @@
             gap: 12px;
             color: white;
         }
-        .ticket-red-header i {
-            font-size: 1.6rem;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
-        }
-        .ticket-red-header .ticket-event-name {
-            font-weight: 700;
-            font-size: 1rem;
-            margin: 0;
-            color: white;
-            flex: 1;
-        }
+        .ticket-red-header i { font-size: 1.6rem; }
+        .ticket-red-header .ticket-event-name { font-weight: 700; font-size: 1rem; margin: 0; color: white; flex: 1; }
         
-        /* Ticket body */
-        .ticket-body {
-            padding: 16px;
-            background: white;
-        }
+        .ticket-body { padding: 16px; background: white; }
+        .ticket-details-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0; font-size: 0.75rem; color: #334155; }
+        .ticket-details-row i { width: 18px; color: #E30613; }
         
-        .ticket-details-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 8px 0;
-            font-size: 0.75rem;
-            color: #334155;
-        }
-        .ticket-details-row i {
-            width: 18px;
-            color: #E30613;
-        }
+        .ticket-qr-section { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0; }
         
-        .ticket-qr-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px dashed #e2e8f0;
-        }
-        
-        .ticket-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 16px;
-            padding-top: 8px;
-        }
-        .ticket-btn {
-            background: #E30613;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            justify-content: center;
-        }
-        .ticket-btn-secondary {
-            background: #f1f5f9;
-            color: #E30613;
-            border: 1px solid #E30613;
-        }
+        .ticket-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 8px; }
+        .ticket-btn { background: #E30613; border: none; padding: 10px 16px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; flex: 1; justify-content: center; }
+        .ticket-btn-secondary { background: #f1f5f9; color: #E30613; border: 1px solid #E30613; }
         .ticket-btn:active { transform: scale(0.97); }
         
-        /* Ticket perforation effect (optional) */
         .my-ticket-card::before {
             content: "";
             position: absolute;
@@ -152,7 +86,7 @@
             pointer-events: none;
         }
         
-        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
         .empty-state i { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
         
         /* Modal styles */
@@ -171,41 +105,26 @@
         .toast-msg.show { display: block; animation: fadeUp 0.2s; }
         @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
         
-        .bottom-tab-bar { position: sticky; bottom: 0; background: white; border-top: 1px solid #edf2f8; padding: 8px 16px 20px; display: flex; justify-content: space-around; }
-        .bottom-tab { text-align: center; cursor: pointer; padding: 4px 0; border-radius: 40px; flex: 1; }
-        .bottom-tab .icon { font-size: 1.3rem; color: #94a3b8; }
-        .bottom-tab .label { font-size: 0.6rem; color: #7e8b9f; margin-top: 2px; }
-        .bottom-tab.active .icon, .bottom-tab.active .label { color: #E30613; }
+        .refresh-manual { position: fixed; bottom: 20px; right: 20px; background: #E30613; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 100; display: flex; align-items: center; justify-content: center; }
+        .refresh-manual:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <!-- Header -->
-    <div class="app-header">
-        <div class="logo"><h1>Rands Wallet</h1></div>
-        <div class="header-icons">
-            <span class="header-icon" id="profileIcon"><i class="fas fa-user-circle"></i></span>
-            <span class="header-icon" id="notifyIcon"><i class="fas fa-bell"></i></span>
-        </div>
-    </div>
-    
-    <!-- Welcome Banner with Balance -->
-    <div class="welcome-banner">
-        <div class="welcome-text">Welcome back,</div>
-        <div class="customer-name" id="customerName">Mziwonke KaBuyaphi</div>
-        <div class="balance-row">
-            <div><span class="balance-label">Wallet Balance</span><br><span class="balance-amount" id="walletBalance">R 2,500.00</span></div>
-            <button class="top-up-btn" id="topUpBtn"><i class="fas fa-plus-circle"></i> Top Up</button>
-        </div>
-    </div>
-    
-    <!-- Tab Navigation -->
-    <div class="tab-bar">
-        <div class="tab active" data-tab="events">🎟️ Events</div>
-        <div class="tab" data-tab="mytickets">🎫 My Tickets</div>
-    </div>
-    
     <div class="app-main">
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="balance-label">My Wallet Balance</div>
+            <div class="balance-amount" id="walletBalance">R 0.00</div>
+            <button class="top-up-btn" id="topUpBtn"><i class="fas fa-plus-circle"></i> Top Up Wallet</button>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-bar">
+            <div class="tab active" data-tab="events"><i class="fas fa-calendar-alt"></i> Events</div>
+            <div class="tab" data-tab="mytickets"><i class="fas fa-ticket-alt"></i> My Tickets</div>
+        </div>
+        
         <!-- Events Panel -->
         <div id="eventsPanel" class="tab-panel active">
             <div id="eventsListContainer"></div>
@@ -217,12 +136,8 @@
         </div>
     </div>
     
-    <!-- Bottom Tab Bar -->
-    <div class="bottom-tab-bar">
-        <div class="bottom-tab active" data-tab="events"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div class="label">Events</div></div>
-        <div class="bottom-tab" data-tab="mytickets"><div class="icon"><i class="fas fa-ticket-alt"></i></div><div class="label">My Tickets</div></div>
-        <div class="bottom-tab" data-tab="support"><div class="icon"><i class="fas fa-headset"></i></div><div class="label">Support</div></div>
-    </div>
+    <!-- Manual refresh button -->
+    <button class="refresh-manual" id="manualRefreshBtn"><i class="fas fa-sync-alt"></i></button>
     
     <!-- Top Up Modal -->
     <div id="topUpModal" class="modal">
@@ -246,16 +161,14 @@
 </div>
 
 <script>
-    // ========== STORAGE KEYS ==========
-    const EVENTS_STORAGE_KEY = 'rands_events_v2';
+    // ========== STORAGE KEY - MATCHES YOUR ADMIN PAGE ==========
+    const STORAGE_KEY = 'rands_events';  // ← Same key as event-admin.html!
     const TICKETS_STORAGE_KEY = 'user_tickets_v2';
     const WALLET_KEY = 'customer_wallet_balance';
-    const CUSTOMER_KEY = 'current_customer';
     
     let events = [];
     let myTickets = [];
-    let walletBalance = 2500.00;
-    let currentCustomer = { id: "CUST_001", name: "Mziwonke KaBuyaphi", phone: "0635713652", email: "mziwonke@rands.co.za" };
+    let walletBalance = 0;
     
     function showToast(msg) { 
         let t = document.getElementById('globalToast'); 
@@ -264,36 +177,38 @@
         setTimeout(() => t.classList.remove('show'), 2200); 
     }
     
-    function saveEvents() { localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events)); }
     function saveTickets() { localStorage.setItem(TICKETS_STORAGE_KEY, JSON.stringify(myTickets)); }
     function saveWallet() { localStorage.setItem(WALLET_KEY, walletBalance.toFixed(2)); }
     
-    function loadData() {
-        const storedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
-        if (storedEvents && storedEvents.length > 2) {
-            events = JSON.parse(storedEvents);
+    // Load events from the SAME key your admin uses
+    function loadEvents() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored && stored.length > 2) {
+            events = JSON.parse(stored);
+            console.log(`✅ Loaded ${events.length} events from ${STORAGE_KEY}`);
         } else {
-            events = [
-                { id: "evt_1", name: "RANDS Summer Fest 2026", date: "2026-12-15", time: "18:00", location: "Cape Town Stadium", description: "Biggest music festival", ticketTypes: [{ type: "Early Bird", price: 299, capacity: 200, sold: 45 }, { type: "General", price: 450, capacity: 800, sold: 210 }, { type: "VIP", price: 1200, capacity: 100, sold: 12 }] },
-                { id: "evt_2", name: "Neptune Rave", date: "2026-11-28", time: "20:00", location: "Zone 6 Venue, Soweto", description: "Electronic music night", ticketTypes: [{ type: "Early Bird", price: 150, capacity: 300, sold: 180 }, { type: "General", price: 250, capacity: 600, sold: 320 }, { type: "VIP", price: 500, capacity: 80, sold: 25 }] },
-                { id: "evt_3", name: "Amapiano Kings", date: "2026-12-05", time: "19:00", location: "Ticketpro Dome, JHB", description: "Best Amapiano artists", ticketTypes: [{ type: "General", price: 350, capacity: 1000, sold: 450 }, { type: "VIP", price: 800, capacity: 150, sold: 40 }] }
-            ];
-            saveEvents();
+            events = [];
+            console.log("📭 No events found. Create events in Event Management first.");
         }
-        
+    }
+    
+    function loadTickets() {
         const storedTickets = localStorage.getItem(TICKETS_STORAGE_KEY);
         if (storedTickets) myTickets = JSON.parse(storedTickets);
         else myTickets = [];
-        
+    }
+    
+    function loadWallet() {
         const storedBalance = localStorage.getItem(WALLET_KEY);
         if (storedBalance) walletBalance = parseFloat(storedBalance);
-        else walletBalance = 2500.00;
-        
-        const storedCustomer = localStorage.getItem(CUSTOMER_KEY);
-        if (storedCustomer) currentCustomer = JSON.parse(storedCustomer);
-        
+        else walletBalance = 0;
         updateBalanceDisplay();
-        document.getElementById('customerName').innerText = currentCustomer.name.split(' ')[0];
+    }
+    
+    function loadAllData() {
+        loadEvents();
+        loadTickets();
+        loadWallet();
     }
     
     function updateBalanceDisplay() {
@@ -303,38 +218,62 @@
     function renderEvents() {
         const container = document.getElementById('eventsListContainer');
         if (!events.length) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No events available right now.</p></div>`;
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No events available.<br><br>💡 Create events in the Event Management panel.<br>Events will appear here automatically.</p><button id="debugRefreshBtn" style="margin-top:16px; background:#E30613; color:white; border:none; padding:8px 20px; border-radius:30px; cursor:pointer;"><i class="fas fa-sync-alt"></i> Refresh Now</button></div>`;
+            
+            const debugBtn = document.getElementById('debugRefreshBtn');
+            if (debugBtn) {
+                debugBtn.onclick = () => {
+                    loadEvents();
+                    renderEvents();
+                    showToast(`Refreshed! Found ${events.length} events.`);
+                };
+            }
             return;
         }
         
+        // Filter upcoming events (not ended)
         const now = new Date();
-        const upcoming = events.filter(e => new Date(e.date) >= now || e.date >= new Date().toISOString().split('T')[0]);
+        const upcoming = events.filter(e => {
+            if (!e.date) return true;
+            if (e.status === 'ended') return false;
+            const eventDate = new Date(e.date);
+            return eventDate >= now || e.date >= new Date().toISOString().split('T')[0];
+        });
         
-        if (upcoming.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-hourglass-end"></i><p>No upcoming events at the moment</p></div>`;
+        if (upcoming.length === 0 && events.length > 0) {
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-hourglass-end"></i><p>All events have passed.<br>Check back for new events!</p></div>`;
             return;
         }
         
         container.innerHTML = upcoming.map(event => {
-            const ticketButtons = event.ticketTypes.map(tt => {
-                const remaining = tt.capacity - tt.sold;
+            const ticketTypes = ['earlyBird', 'general', 'vip'];
+            const labels = { earlyBird: '🎟️ Early Bird', general: '👥 General', vip: '👑 VIP' };
+            
+            const ticketButtons = ticketTypes.map(t => {
+                const tt = event.ticketTypes[t];
+                if (!tt) return '';
+                const remaining = (tt.capacity || 0) - (tt.sold || 0);
                 const soldOut = remaining <= 0;
+                const price = tt.price || 0;
                 return `<button class="ticket-type-btn ${soldOut ? 'sold-out' : ''}" 
-                            onclick="${soldOut ? '' : `purchaseTicket('${event.id}', '${tt.type}', ${tt.price})`}"
+                            onclick="${soldOut ? '' : `purchaseTicket('${event.id}', '${t}', ${price})`}"
                             ${soldOut ? 'disabled' : ''}>
-                            <i class="fas fa-ticket-alt"></i> ${tt.type} • R${tt.price.toLocaleString()} 
+                            <i class="fas fa-ticket-alt"></i> ${labels[t]} • R${price.toLocaleString()} 
                             ${soldOut ? '(Sold Out)' : `(${remaining} left)`}
                         </button>`;
             }).join('');
             
+            const bannerStyle = event.imageData ? `background-image: url(${event.imageData});` : '';
+            const hasImage = !!event.imageData;
+            
             return `
                 <div class="event-card">
-                    <div class="event-banner">
-                        <i class="fas fa-music"></i>
+                    <div class="event-banner" style="${bannerStyle}">
+                        ${!hasImage ? '<i class="fas fa-calendar-alt"></i>' : ''}
                     </div>
                     <div class="event-info">
                         <div class="event-title">${escapeHtml(event.name)}</div>
-                        <div class="event-date"><i class="far fa-calendar-alt"></i> ${formatDate(event.date)} at ${event.time}</div>
+                        <div class="event-date"><i class="far fa-calendar-alt"></i> ${formatDate(event.date)} at ${event.time || '19:00'}</div>
                         <div class="event-location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</div>
                         <div class="ticket-types">${ticketButtons}</div>
                     </div>
@@ -343,11 +282,10 @@
         }).join('');
     }
     
-    // ========== PLAIN RED TICKET CARD WITH RED ICON ==========
     function renderMyTickets() {
         const container = document.getElementById('myTicketsContainer');
         if (!myTickets.length) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-ticket-alt"></i><p>You haven't purchased any tickets yet.<br>Go to Events tab to buy tickets!</p></div>`;
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-ticket-alt"></i><p>No tickets purchased yet.<br>Go to Events tab to buy tickets!</p></div>`;
             return;
         }
         
@@ -403,24 +341,27 @@
         const event = events.find(e => e.id === eventId);
         if (!event) { showToast("Event not found"); return; }
         
-        const tt = event.ticketTypes.find(t => t.type === ticketType);
+        const tt = event.ticketTypes[ticketType];
         if (!tt) { showToast("Ticket type not available"); return; }
         
-        const remaining = tt.capacity - tt.sold;
+        const remaining = (tt.capacity || 0) - (tt.sold || 0);
         if (remaining <= 0) { showToast("Sorry, this ticket type is sold out!"); return; }
         
-        showQuantityModal(event, tt, price);
+        showQuantityModal(event, ticketType, tt, price);
     }
     
-    function showQuantityModal(event, ticketTypeObj, price) {
+    function showQuantityModal(event, ticketType, ticketTypeObj, price) {
         const modal = document.createElement('div');
         modal.className = 'modal active';
+        const remaining = (ticketTypeObj.capacity || 0) - (ticketTypeObj.sold || 0);
+        const typeName = { earlyBird: 'Early Bird', general: 'General Admission', vip: 'VIP' }[ticketType];
+        
         modal.innerHTML = `
             <div class="modal-card">
                 <h3 style="color:#E30613;"><i class="fas fa-ticket-alt"></i> ${escapeHtml(event.name)}</h3>
-                <p style="margin:10px 0;">Ticket: <strong>${ticketTypeObj.type}</strong><br>Price: R${price.toLocaleString()}</p>
+                <p style="margin:10px 0;">Ticket: <strong>${typeName}</strong><br>Price: R${price.toLocaleString()}</p>
                 <p>Quantity: 
-                    <input type="number" id="ticketQty" min="1" max="${ticketTypeObj.capacity - ticketTypeObj.sold}" value="1" style="width:80px; padding:8px; border-radius:16px; border:1px solid #ccc; margin-left:8px;">
+                    <input type="number" id="ticketQty" min="1" max="${remaining}" value="1" style="width:80px; padding:8px; border-radius:16px; border:1px solid #ccc; margin-left:8px;">
                 </p>
                 <p style="margin-top:12px;">Total: <strong id="totalAmount">R${price.toLocaleString()}</strong></p>
                 <p style="font-size:0.7rem; margin-top:8px;">💰 Your balance: R${walletBalance.toLocaleString()}</p>
@@ -438,7 +379,7 @@
         qtyInput.addEventListener('input', () => {
             let qty = parseInt(qtyInput.value) || 1;
             if (qty < 1) qty = 1;
-            if (qty > (ticketTypeObj.capacity - ticketTypeObj.sold)) qty = ticketTypeObj.capacity - ticketTypeObj.sold;
+            if (qty > remaining) qty = remaining;
             qtyInput.value = qty;
             totalSpan.innerText = `R${(qty * price).toLocaleString()}`;
         });
@@ -457,10 +398,10 @@
             saveWallet();
             updateBalanceDisplay();
             
+            // Update event sold count in localStorage (same key as admin)
             const eventIndex = events.findIndex(e => e.id === event.id);
-            const ttIndex = events[eventIndex].ticketTypes.findIndex(t => t.type === ticketTypeObj.type);
-            events[eventIndex].ticketTypes[ttIndex].sold += qty;
-            saveEvents();
+            events[eventIndex].ticketTypes[ticketType].sold = (events[eventIndex].ticketTypes[ticketType].sold || 0) + qty;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
             
             const newTicket = {
                 id: 'tkt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
@@ -469,18 +410,19 @@
                 eventDate: event.date,
                 eventTime: event.time,
                 eventLocation: event.location,
-                ticketType: ticketTypeObj.type,
+                ticketType: typeName,
                 quantity: qty,
                 pricePerTicket: price,
                 totalPaid: total,
-                seatCode: `${ticketTypeObj.type.substring(0,2).toUpperCase()}${Math.floor(Math.random()*1000)}`,
+                seatCode: `${typeName.substring(0,2).toUpperCase()}${Math.floor(Math.random()*1000)}`,
                 purchaseDate: new Date().toISOString()
             };
             myTickets.push(newTicket);
             saveTickets();
             
-            showToast(`✅ Success! Purchased ${qty}x ${ticketTypeObj.type} ticket(s).`);
+            showToast(`✅ Success! Purchased ${qty}x ${typeName} ticket(s).`);
             modal.remove();
+            loadEvents(); // Reload events to get updated sold counts
             renderEvents();
             renderMyTickets();
         };
@@ -572,26 +514,36 @@
     function switchTab(tabId) {
         document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.bottom-tab').forEach(bt => bt.classList.remove('active'));
         
         document.getElementById(`${tabId}Panel`).classList.add('active');
         document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
-        document.querySelector(`.bottom-tab[data-tab="${tabId}"]`).classList.add('active');
         
         if (tabId === 'mytickets') renderMyTickets();
         if (tabId === 'events') renderEvents();
-        if (tabId === 'support') showToast("Contact support: support@rands.co.za | +27 63 571 3652");
+    }
+    
+    function fullRefresh() {
+        loadAllData();
+        renderEvents();
+        if (document.querySelector('.tab.active')?.dataset.tab === 'mytickets') renderMyTickets();
+        showToast(`Refreshed! Found ${events.length} events.`);
+        console.log("Current events in storage:", events.length);
     }
     
     function init() {
-        loadData();
+        loadAllData();
         renderEvents();
         renderMyTickets();
         
-        document.querySelectorAll('.tab, .bottom-tab').forEach(tab => {
+        // Tab listeners
+        document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => switchTab(tab.dataset.tab));
         });
         
+        // Manual refresh button
+        document.getElementById('manualRefreshBtn').addEventListener('click', fullRefresh);
+        
+        // Top up modal
         document.getElementById('topUpBtn').addEventListener('click', () => {
             document.getElementById('topUpModal').classList.add('active');
         });
@@ -610,19 +562,29 @@
             });
         });
         
-        document.getElementById('profileIcon').addEventListener('click', () => {
-            showToast(`👤 ${currentCustomer.name}\n📞 ${currentCustomer.phone}`);
-        });
-        document.getElementById('notifyIcon').addEventListener('click', () => {
-            showToast("🔔 No new notifications");
-        });
-        
+        // Auto-refresh every 3 seconds (fast sync with admin)
         setInterval(() => {
-            loadData();
+            loadEvents();
             renderEvents();
             if (document.querySelector('.tab.active')?.dataset.tab === 'mytickets') renderMyTickets();
-            updateBalanceDisplay();
-        }, 10000);
+        }, 3000);
+        
+        // Listen for storage changes from admin page
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                console.log("Storage changed! Reloading events...");
+                loadEvents();
+                renderEvents();
+                showToast("Events updated from admin!");
+            }
+            if (e.key === TICKETS_STORAGE_KEY) {
+                loadTickets();
+                if (document.querySelector('.tab.active')?.dataset.tab === 'mytickets') renderMyTickets();
+            }
+            if (e.key === WALLET_KEY) {
+                loadWallet();
+            }
+        });
     }
     
     init();
