@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Rands Wallet | Dashboard</title>
+    <title>Rands Wallet | Virtual Card Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* ========== YOUR ORIGINAL STYLES (unchanged, beautiful) ========== */
+        /* ========== BASE RESET & CONTAINER ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background: #f4f6fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 12px; }
         .app-container { max-width: 500px; width: 100%; margin: 0 auto; background: #ffffff; border-radius: 40px; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08); overflow: hidden; position: relative; }
         
+        /* ========== HEADER & NAVIGATION ========== */
         #movableHeaderGroup { position: sticky; top: 0; z-index: 100; background: #fff; transition: transform 0.3s ease; will-change: transform; }
         .header-hidden { transform: translateY(-100%); }
         .app-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: white; border-bottom: 1px solid #eff3f8; }
@@ -26,22 +27,27 @@
         .welcome-greeting i { color: #E30613; font-size: 1rem; }
         .welcome-greeting span { background: linear-gradient(135deg, #E30613 0%, #b0020e 100%); background-clip: text; -webkit-background-clip: text; color: transparent; font-weight: 800; }
         .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
-        .app-main { height: auto; max-height: 80vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
-        .top-quick-bar, .quick-actions { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
         .top-quick-item, .quick-item { flex: 1; text-align: center; padding: 6px 4px; font-size: 0.68rem; font-weight: 600; color: #2c3f5c; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 40px; transition: 0.2s; }
         .top-quick-item:active, .quick-item:active { background: #f0f2f5; transform: scale(0.96); }
+        
+        /* ========== TAB SYSTEM ========== */
         .tab-content { display: none; animation: fadeSlide 0.25s ease-out; }
         .tab-content.active { display: block; }
         @keyframes fadeSlide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .app-main { height: auto; max-height: 80vh; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 8px; }
+        
+        /* ========== BALANCE HERO ========== */
         .balance-hero { background: linear-gradient(115deg, #E30613, #9f0110); border-radius: 32px; padding: 24px; margin: 0 20px 20px; color: white; }
         .balance-amount { font-size: 2.7rem; font-weight: 800; letter-spacing: -1px; }
         .balance-action-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
         .balance-action-btn { background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.4); border-radius: 60px; padding: 6px 14px; font-size: 0.75rem; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-        .card-section { padding: 0 24px 0; margin-top: -4px; }
+        
+        /* ========== VIRTUAL CARD STYLES ========== */
+        .card-section { padding: 0 20px 0; margin-top: -4px; }
         .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
         .section-header h3 { font-size: 0.7rem; font-weight: 700; color: #ffffff !important; background: #E30613; padding: 4px 12px; border-radius: 20px; }
         
-        /* ========== VIRTUAL CARD STYLES (from provided card tab) ========== */
         .card-wrapper-vc {
             perspective: 1200px;
             width: 100%;
@@ -54,7 +60,6 @@
             animation: flyInCard 0.7s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
             transform-origin: center center;
         }
-        
         @keyframes flyInCard {
             0% { opacity: 0; transform: translateY(-120px) rotateX(-15deg); filter: blur(4px); }
             40% { opacity: 1; transform: translateY(15px) rotateX(2deg); }
@@ -62,16 +67,8 @@
             85% { transform: translateY(3px) rotateX(0.5deg); }
             100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
         }
-        
-        .card-wrapper-vc.animate-float {
-            animation: floatCard 3s ease-in-out infinite;
-        }
-        
-        @keyframes floatCard {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
-        }
+        .card-wrapper-vc.animate-float { animation: floatCard 3s ease-in-out infinite; }
+        @keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
         
         .card-flipper-vc {
             position: relative;
@@ -82,10 +79,7 @@
             transform-origin: 50% 50%;
             will-change: transform;
         }
-        
-        .card-wrapper-vc.flipped .card-flipper-vc {
-            transform: rotateY(180deg);
-        }
+        .card-wrapper-vc.flipped .card-flipper-vc { transform: rotateY(180deg); }
         
         .card-front-vc, .card-back-vc {
             position: absolute;
@@ -102,7 +96,6 @@
             flex-direction: column;
             overflow: hidden;
         }
-        
         .card-front-vc {
             background: linear-gradient(135deg, #E30613 0%, #b0020e 100%);
             transform: rotateY(0deg);
@@ -110,11 +103,7 @@
             transition: background 0.3s ease, filter 0.3s;
             position: relative;
         }
-        
-        .card-front-vc.blocked {
-            filter: grayscale(0.4) brightness(0.7);
-        }
-        
+        .card-front-vc.blocked { filter: grayscale(0.4) brightness(0.7); }
         .card-front-vc.blocked::after {
             content: "BLOCKED";
             position: absolute;
@@ -128,15 +117,12 @@
             white-space: nowrap;
             pointer-events: none;
             z-index: 2;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-        
         .card-back-vc {
             background: #ffffff;
             transform: rotateY(180deg);
             color: #1e2a3a;
         }
-
         .shimmer-vc {
             position: absolute;
             top: -50%;
@@ -149,12 +135,7 @@
             pointer-events: none;
             z-index: 0;
         }
-
-        @keyframes shimmerSweep {
-            0% { transform: translateX(-60%) rotate(25deg); }
-            100% { transform: translateX(60%) rotate(25deg); }
-        }
-
+        @keyframes shimmerSweep { 0% { transform: translateX(-60%) rotate(25deg); } 100% { transform: translateX(60%) rotate(25deg); } }
         .radial-glow-vc {
             position: absolute;
             top: -30%;
@@ -167,13 +148,7 @@
             opacity: 0.7;
             animation: pulseGlowSoft 3s ease-in-out infinite;
         }
-
-        @keyframes pulseGlowSoft {
-            0% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.02); }
-            100% { opacity: 0.4; transform: scale(1); }
-        }
-
+        @keyframes pulseGlowSoft { 0% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.02); } 100% { opacity: 0.4; transform: scale(1); } }
         .card-front-vc::after {
             content: "";
             position: absolute;
@@ -185,7 +160,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .card-back-vc::before {
             content: "";
             position: absolute;
@@ -196,23 +170,12 @@
             background: repeating-linear-gradient(135deg, rgba(227,6,19,0.06) 0px, rgba(227,6,19,0.06) 2px, transparent 2px, transparent 8px);
             pointer-events: none;
         }
-        
-        .card-front-vc > *, .card-back-vc > * {
-            position: relative;
-            z-index: 1;
-        }
-
+        .card-front-vc > *, .card-back-vc > * { position: relative; z-index: 1; }
         .top-section-vc { flex-shrink: 0; }
         .card-logo-vc { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.95); margin-bottom: 4px; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
         .tagline-rfid-row-vc { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .card-tagline-vc { font-family: 'Playfair Display', serif; font-size: 12px; color: rgba(255,255,255,0.85); }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(227,6,19,0.5); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); }
-            70% { box-shadow: 0 0 0 10px rgba(227,6,19,0); text-shadow: 0 0 8px rgba(227,6,19,0.8); transform: scale(1.02); }
-            100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); }
-        }
-
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(227,6,19,0.5); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); } 70% { box-shadow: 0 0 0 10px rgba(227,6,19,0); text-shadow: 0 0 8px rgba(227,6,19,0.8); transform: scale(1.02); } 100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); text-shadow: 0 0 2px rgba(227,6,19,0.6); transform: scale(1); } }
         .rfid-icon-vc { color: white; font-size: 1.2rem; background: rgba(0,0,0,0.25); width: 34px; height: 34px; border-radius: 30px; display: flex; align-items: center; justify-content: center; animation: pulseGlow 1.8s infinite; backdrop-filter: blur(2px); border: 1px solid rgba(255,255,255,0.5); }
         .chip-lines-vc { width: 44px; height: 36px; background: radial-gradient(ellipse at 30% 35%, #f3e5ab, #d4af37); border-radius: 6px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,200,0.8), inset 0 0 0 1px rgba(255,255,200,0.6); flex-shrink: 0; overflow: hidden; }
         .chip-lines-vc::before { content: ""; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 0.5px solid rgba(0,0,0,0.3); border-radius: 4px; }
@@ -229,168 +192,47 @@
         .name-icon-row-vc { display: flex; justify-content: space-between; align-items: flex-end; }
         .card-holder-name-vc { font-family: 'Playfair Display', serif; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.85); text-transform: uppercase; }
         .mastercard-icon-vc { font-size: 2.3rem; color: white; line-height: 1; }
-
         .card-back-barcode-vc { background: #ffffff; border-radius: 16px; padding: 6px 10px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); display: flex; justify-content: center; align-items: center; }
         .card-back-barcode-vc canvas { width: 100%; height: auto; max-height: 48px; border-radius: 8px; }
         .signature-area-vc { background: #f9f9f9; background-image: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%); min-height: 42px; border-radius: 12px; display: flex; align-items: center; padding: 4px 12px; font-family: 'Kaushan Script', cursive; font-size: 0.85rem; color: #1e2a3a; overflow-x: auto; white-space: nowrap; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.1); position: relative; }
         .signature-area-vc::before { content: "AUTHORIZED SIGNATURE"; position: absolute; top: -9px; left: 12px; background: #E30613; padding: 0 8px; font-size: 0.45rem; font-family: 'Playfair Display', serif; font-weight: 700; color: white; border-radius: 20px; letter-spacing: 0.5px; }
         .card-bottom-row-vc { display: flex; justify-content: flex-end; align-items: center; margin-top: 4px; }
         .cvv-vc { background: rgba(0,0,0,0.06); padding: 5px 14px; border-radius: 30px; font-family: monospace; font-weight: bold; color: #1e2a3a; font-size: 0.85rem; letter-spacing: 1px; }
-
-        .flip-hint-vc { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 0.6rem; 
-            text-align: center; 
-            color: #5a687c; 
-            margin-top: 4px; 
-            margin-bottom: 16px; 
-            font-weight: 500; 
-            background: rgba(255,255,255,0.7); 
-            display: inline-block; 
-            width: auto; 
-            margin-left: auto; 
-            margin-right: auto; 
-            padding: 4px 14px; 
-            border-radius: 40px; 
-            backdrop-filter: blur(2px); 
-        }
-        
-        .gauge-container-vc {
-            background: white;
-            border-radius: 32px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .circular-gauge-vc {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            flex-shrink: 0;
-        }
-        .circular-gauge-vc svg {
-            width: 120px;
-            height: 120px;
-            transform: rotate(-90deg);
-        }
-        .circular-gauge-vc .gauge-bg {
-            stroke: #e2e8f0;
-            stroke-width: 10;
-            fill: none;
-        }
-        .circular-gauge-vc .gauge-fill {
-            stroke: #E30613;
-            stroke-width: 10;
-            fill: none;
-            stroke-linecap: round;
-            transition: stroke-dasharray 0.5s ease, stroke 0.3s ease;
-        }
-        .gauge-percentage-vc {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        .gauge-percentage-vc .percent {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #1e293b;
-        }
-        .gauge-percentage-vc .label {
-            font-size: 0.6rem;
-            color: #64748b;
-        }
-        .gauge-info-vc {
-            flex: 1;
-        }
-        .gauge-info-vc .spent-stats {
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-        .gauge-info-vc .spent-stats strong {
-            color: #E30613;
-        }
-        .demo-spend-full-vc {
-            background: #f1f5f9;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            color: #E30613;
-            cursor: pointer;
-            margin-top: 8px;
-            width: 100%;
-        }
-        .demo-spend-full-vc:active { transform: scale(0.96); }
-        
-        .action-buttons-row-vc { 
-            display: flex; 
-            gap: 12px; 
-            margin-bottom: 16px; 
-            justify-content: center; 
-            flex-wrap: wrap; 
-        }
-        .toggle-btn-vc { 
-            background: white; 
-            border: 1px solid #e2e8f0; 
-            padding: 8px 20px; 
-            border-radius: 40px; 
-            font-weight: 600; 
-            font-size: 0.8rem; 
-            color: #1e293b; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
-        }
+        .flip-hint-vc { font-family: 'Playfair Display', serif; font-size: 0.6rem; text-align: center; color: #5a687c; margin-top: 4px; margin-bottom: 16px; font-weight: 500; background: rgba(255,255,255,0.7); display: inline-block; width: auto; margin-left: auto; margin-right: auto; padding: 4px 14px; border-radius: 40px; backdrop-filter: blur(2px); }
+        .gauge-container-vc { background: white; border-radius: 32px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .circular-gauge-vc { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+        .circular-gauge-vc svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+        .circular-gauge-vc .gauge-bg { stroke: #e2e8f0; stroke-width: 10; fill: none; }
+        .circular-gauge-vc .gauge-fill { stroke: #E30613; stroke-width: 10; fill: none; stroke-linecap: round; transition: stroke-dasharray 0.5s ease, stroke 0.3s ease; }
+        .gauge-percentage-vc { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .gauge-percentage-vc .percent { font-size: 1.3rem; font-weight: 800; color: #1e293b; }
+        .gauge-percentage-vc .label { font-size: 0.6rem; color: #64748b; }
+        .gauge-info-vc { flex: 1; }
+        .gauge-info-vc .spent-stats { font-size: 0.85rem; margin-bottom: 8px; }
+        .gauge-info-vc .spent-stats strong { color: #E30613; }
+        .demo-spend-full-vc { background: #f1f5f9; border: none; padding: 8px 16px; border-radius: 40px; font-weight: 600; font-size: 0.75rem; color: #E30613; cursor: pointer; margin-top: 8px; width: 100%; }
+        .action-buttons-row-vc { display: flex; gap: 12px; margin-bottom: 16px; justify-content: center; flex-wrap: wrap; }
+        .toggle-btn-vc { background: white; border: 1px solid #e2e8f0; padding: 8px 20px; border-radius: 40px; font-weight: 600; font-size: 0.8rem; color: #1e293b; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .toggle-btn-vc i { font-size: 0.9rem; }
         .toggle-btn-vc.active { background: #E30613; color: white; border-color: #E30613; }
-        .toggle-btn-vc:active { transform: scale(0.96); }
         .demo-spend-btn-vc { background: #10b981; color: white; border: none; }
-        
-        .theme-panel-vc, .editor-panel-vc, .controls-panel-vc {
-            background: white;
-            border-radius: 32px;
-            padding: 20px;
-            margin-top: 16px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .theme-panel-vc { display: none; }
-        .editor-panel-vc { display: none; }
-        .controls-panel-vc { display: none; }
-        .theme-panel-vc.visible { display: block; }
-        .editor-panel-vc.visible { display: block; }
-        .controls-panel-vc.visible { display: block; }
-        
+        .theme-panel-vc, .editor-panel-vc, .controls-panel-vc { background: white; border-radius: 32px; padding: 20px; margin-top: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .theme-panel-vc, .editor-panel-vc, .controls-panel-vc { display: none; }
+        .theme-panel-vc.visible, .editor-panel-vc.visible, .controls-panel-vc.visible { display: block; }
         .panel-title-vc { font-weight: 700; font-size: 0.9rem; color: #1e293b; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; border-left: 3px solid #E30613; padding-left: 12px; }
         .color-swatches-vc { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 8px; }
         .color-swatch-vc { width: 48px; height: 48px; border-radius: 24px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.15); border: 2px solid white; }
         .color-swatch-vc:hover { transform: scale(1.08); }
         .color-swatch-vc.active { border: 3px solid #1e293b; transform: scale(1.05); box-shadow: 0 0 0 2px white, 0 0 0 4px #E30613; }
-        
         .input-group-vc { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
-        .input-field-vc { flex: 1; background: #f8fafd; border: 1px solid #e2e8f0; padding: 10px 14px; border-radius: 60px; font-size: 0.8rem; font-family: 'Inter', monospace; transition: 0.2s; }
-        .input-field-vc:focus { outline: none; border-color: #E30613; box-shadow: 0 0 0 2px rgba(227,6,19,0.2); }
+        .input-field-vc { flex: 1; background: #f8fafd; border: 1px solid #e2e8f0; padding: 10px 14px; border-radius: 60px; font-size: 0.8rem; font-family: 'Inter', monospace; }
         .reset-btn-vc { background: #f1f5f9; border: none; padding: 10px 18px; border-radius: 40px; font-weight: 600; font-size: 0.75rem; color: #E30613; cursor: pointer; }
-        
         .limit-slider-container-vc { margin: 16px 0; }
         .limit-slider-vc { width: 100%; height: 6px; -webkit-appearance: none; background: #e2e8f0; border-radius: 3px; outline: none; }
         .limit-slider-vc::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #E30613; cursor: pointer; }
         .limit-value-vc { font-weight: 700; color: #E30613; font-size: 1.1rem; }
         .limit-presets-vc { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
         .preset-btn-vc { background: #f1f5f9; border: none; padding: 6px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; color: #1e293b; cursor: pointer; }
-        .preset-btn-vc:hover { background: #E30613; color: white; }
         .limit-status-vc { background: #f8fafd; border-radius: 16px; padding: 12px; margin-top: 12px; font-size: 0.75rem; }
         .block-toggle-vc { display: flex; align-items: center; justify-content: space-between; background: #f8fafd; border-radius: 20px; padding: 12px 16px; margin: 16px 0; }
         .block-toggle-vc label { font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
@@ -400,122 +242,51 @@
         .slider-round-vc:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
         input:checked + .slider-round-vc { background-color: #E30613; }
         input:checked + .slider-round-vc:before { transform: translateX(26px); }
-        
         .note-text-vc { font-size: 0.7rem; color: #64748b; text-align: center; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        @media (max-width: 520px) { .card-wrapper-vc { height: 200px; } .card-number-vc { font-size: 1.2rem; } .color-swatch-vc { width: 40px; height: 40px; } .circular-gauge-vc { width: 100px; height: 100px; } .circular-gauge-vc svg { width: 100px; height: 100px; } }
         
-        @media (max-width: 520px) {
-            .card-wrapper-vc { height: 200px; }
-            .card-number-vc { font-size: 1.2rem; }
-            .color-swatch-vc { width: 40px; height: 40px; }
-            .circular-gauge-vc { width: 100px; height: 100px; }
-            .circular-gauge-vc svg { width: 100px; height: 100px; }
-        }
-        
-        /* Rest of original styles continue */
-        .action-buttons-row { display: flex; gap: 14px; margin: 16px 24px 12px; }
+        /* ========== ACTION BUTTONS ========== */
+        .action-buttons-row { display: flex; gap: 14px; margin: 16px 20px 12px; }
         .action-btn { flex: 1; border: none; padding: 14px 6px; border-radius: 60px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         .action-btn:active { transform: scale(0.96); }
         .send-primary { background: linear-gradient(135deg, #E30613 0%, #b71c1c 100%); color: white; box-shadow: 0 6px 14px rgba(227, 6, 19, 0.35); }
-        .request-secondary { background: #f1f4f9; color: #1f2a48; border: 1px solid #e2e8f0; }
-        .pay-tab-pay-btn { background: #E30613 !important; color: white !important; border: none; width: 100% !important; margin-top: 24px; cursor: pointer; }
+        .pay-secondary { background: #f1f4f9; color: #1f2a48; border: 1px solid #e2e8f0; }
+        
+        .top-quick-bar { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 8px; background: #ffffff; border-radius: 60px; padding: 6px 12px; border: 1px solid #ecf0f5; margin: 8px 20px; }
+        .queue-section { margin: 20px 20px 24px; }
+        .queue-title { font-size: 0.9rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .queue-cards { display: flex; gap: 16px; flex-wrap: wrap; }
+        .queue-card { flex: 1; min-width: 200px; background: white; border-radius: 24px; padding: 16px; border: 1px solid #ecf0f5; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .join-queue-btn { background: #E30613; color: white; border: none; border-radius: 40px; padding: 8px 16px; font-size: 0.75rem; font-weight: 600; cursor: pointer; width: 100%; }
         .ticket-module { background: white; margin: 0 20px 24px; border-radius: 28px; border: 1px solid #edf2f7; overflow: hidden; }
         .section-title { padding: 14px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid #eff3f8; font-weight: 600; color: #1e293b; }
         .tx-list { max-height: 500px; overflow-y: auto; }
         .tx-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #f0f4fa; }
         .tx-icon { width: 44px; height: 44px; background: rgba(227, 6, 19, 0.08); border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #E30613; margin-right: 12px; flex-shrink: 0; }
-        .tx-details { flex: 1; }
-        .tx-desc { font-weight: 600; font-size: 0.85rem; color: #1e293b; margin-bottom: 2px; }
-        .tx-date { font-size: 0.65rem; color: #6c7a8e; }
-        .tx-amount { font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
-        .tx-amount.positive { color: #10b981; }
-        .tx-amount.negative { color: #E30613; }
+        .tx-amount.positive { color: #10b981; } .tx-amount.negative { color: #E30613; }
         .pay-container { background: white; margin: 20px; border-radius: 28px; padding: 20px; text-align: center; border: 1px solid #edf2f7; }
         .pay-heading { font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; }
         .barcode-container { background: white; padding: 10px; border-radius: 16px; margin-bottom: 16px; }
         #barcodeCanvas { max-width: 260px; width: 100%; height: auto; }
         .qr-large { margin-top: 16px; padding-top: 16px; border-top: 1px solid #eef2f8; }
         #qrcode { width: 140px; height: 140px; margin: 0 auto; }
-        .transactions-tabs { display: flex; border-bottom: 1px solid #eff3f8; }
-        .transactions-tab { flex: 1; text-align: center; padding: 10px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
-        .transactions-tab.active { color: #E30613; border-bottom: 2px solid #E30613; }
-        .transactions-panel { display: none; }
-        .transactions-panel.active { display: block; }
         .cards-horizontal { display: flex; overflow-x: auto; gap: 16px; padding: 16px 20px; }
-        .cards-horizontal .card-scroll-item { flex: 0 0 265px; width: 265px; }
         .event-ticket-card { height: 190px; background: linear-gradient(135deg, #f5a623, #d43f1d); border-radius: 28px; padding: 16px; color: white; display: flex; flex-direction: column; justify-content: space-between; }
         .cards-card-wrapper { height: 190px; }
-        .card-mini-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .card-mini-actions .mini-btn { background: rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 40px; font-size: 0.7rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
-        .event-ticket-card .mini-btn { background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3); }
-        
-        .bottom-tab-bar {
-            position: sticky; bottom: 0; z-index: 100; background: #fff; box-shadow: 0 -2px 6px rgba(0,0,0,0.1); border-top: 1px solid #edf2f8; padding: 6px 12px 18px; display: flex; justify-content: space-between;
-        }
-        .tab-nav { flex: 1; text-align: center; cursor: pointer; padding: 4px 0; border-radius: 40px; transition: 0.1s; }
+        .bottom-tab-bar { position: sticky; bottom: 0; z-index: 100; background: #fff; box-shadow: 0 -2px 6px rgba(0,0,0,0.1); border-top: 1px solid #edf2f8; padding: 6px 12px 18px; display: flex; justify-content: space-between; }
+        .tab-nav { flex: 1; text-align: center; cursor: pointer; padding: 4px 0; border-radius: 40px; }
         .tab-nav .tab-icon { font-size: 1.3rem; color: #94a3b8; }
         .tab-nav .tab-label { font-size: 0.6rem; font-weight: 500; color: #7e8b9f; margin-top: 2px; }
         .tab-nav.active .tab-icon, .tab-nav.active .tab-label { color: #E30613; }
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); align-items: flex-end; justify-content: center; z-index: 3000; }
         .modal.active { display: flex; }
         .modal-card { background: white; width: 100%; max-width: 480px; border-radius: 28px 28px 0 0; padding: 24px 20px 28px; animation: slideUp 0.3s; }
-        .amount-field, .input-field { background: #f8fafd; border: 1px solid #e2e8f0; padding: 12px; border-radius: 60px; width: 100%; font-size: 0.9rem; margin-bottom: 10px; }
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-btn { flex: 1; padding: 12px; border-radius: 60px; font-weight: 600; border: none; cursor: pointer; }
-        .btn-confirm { background: #E30613; color: white; }
-        .btn-cancel { background: #f1f5f9; color: #2c3e66; }
         .toast-msg { position: fixed; bottom: 100px; left: 20px; right: 20px; background: #1e2a3a; color: white; padding: 10px 16px; border-radius: 60px; text-align: center; z-index: 3500; display: none; font-size: 0.8rem; }
         .toast-msg.show { display: block; }
-        .receive-qr-container { text-align: center; padding: 10px 0; }
-        .receive-account-id { background: #f1f4f9; padding: 12px; border-radius: 40px; font-family: monospace; font-size: 0.9rem; word-break: break-all; margin: 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .copy-id-btn { background: #E30613; color: white; border: none; border-radius: 40px; padding: 6px 16px; font-size: 0.7rem; font-weight: 600; cursor: pointer; }
-        .queue-section { margin: 20px 20px 24px; }
-        .queue-title { font-size: 0.9rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .queue-title i { color: #E30613; }
-        .queue-cards { display: flex; gap: 16px; flex-wrap: wrap; }
-        .queue-card { flex: 1; min-width: 200px; background: white; border-radius: 24px; padding: 16px; border: 1px solid #ecf0f5; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: transform 0.2s; }
-        .queue-card:hover { transform: translateY(-2px); }
-        .queue-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .queue-stats { font-size: 0.75rem; color: #64748b; margin-bottom: 12px; }
-        .queue-position { font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; color: #E30613; }
-        .join-queue-btn { background: #E30613; color: white; border: none; border-radius: 40px; padding: 8px 16px; font-size: 0.75rem; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
-        .join-queue-btn:active { transform: scale(0.96); }
-        .ticket-item { background: linear-gradient(135deg, #1a1a1a, #0f0f0f); border-radius: 24px; padding: 16px; margin: 12px 16px; border: 1px solid #dc2626; transition: all 0.2s; }
-        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .ticket-event { font-weight: 700; color: #dc2626; font-size: 1rem; }
-        .ticket-status { font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; background: #2a2a2a; color: #ff6b6b; }
-        .ticket-status.checked-in { background: #10b981; color: white; }
-        .ticket-details { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0; font-size: 0.7rem; color: #a0aec0; }
-        .ticket-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #333; }
-        .ticket-id { font-family: monospace; font-size: 0.65rem; color: #666; }
-        .ticket-actions button { background: #dc2626; border: none; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; color: white; cursor: pointer; }
-        .event-shop-item { background: white; border-radius: 20px; padding: 16px; margin: 12px 16px; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; }
-        .event-shop-title { font-weight: 700; color: #dc2626; font-size: 1rem; }
-        .event-shop-date { font-size: 0.7rem; color: #64748b; margin: 4px 0; }
-        .event-ticket-prices { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
-        .price-tag { background: #fef2f2; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; color: #dc2626; cursor: pointer; }
-        .buy-ticket-btn { background: #dc2626; color: white; border: none; padding: 6px 16px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; cursor: pointer; margin-top: 8px; width: 100%; }
-        .vvip-band-card { background: linear-gradient(135deg, #1a1a1a, #0f0f0f); border-radius: 24px; padding: 20px; margin: 16px; border: 2px solid #E30613; text-align: center; }
-        .vvip-band-number { font-family: monospace; font-size: 24px; font-weight: 800; color: #E30613; letter-spacing: 3px; background: #2a2a2a; padding: 8px 16px; border-radius: 40px; display: inline-block; margin: 10px 0; }
-        .vvip-band-qr { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 15px 0; }
-        .print-band-btn { background: #E30613; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; margin-top: 15px; width: 100%; }
-        .vvip-band-info { background: #2a2a2a; border-radius: 16px; padding: 12px; margin: 10px 0; font-size: 12px; color: #a0aec0; }
-        .amount-chip-group { display: flex; gap: 8px; margin: 12px 0; justify-content: center; }
-        .amount-chip { background: #f1f4f9; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-        .statement-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f8; }
-        .download-statement-btn { background: #E30613; color: white; border: none; padding: 8px 16px; border-radius: 30px; font-size: 0.7rem; cursor: pointer; }
-        .blocked-warning { background: #fee2e2; color: #dc2626; padding: 12px; margin: 0 20px 16px; border-radius: 20px; text-align: center; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .profile-container { padding: 20px; }
-        .profile-header { text-align: center; margin-bottom: 24px; }
-        .profile-avatar { width: 100px; height: 100px; background: linear-gradient(135deg, #E30613, #b0020e); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 2.5rem; color: white; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(227,6,19,0.3); }
-        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-name { font-size: 1.3rem; font-weight: 700; color: #1e293b; }
-        .profile-phone { color: #64748b; font-size: 0.85rem; margin-top: 4px; }
-        .verified-badge { background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; }
+        .profile-avatar { width: 100px; height: 100px; background: linear-gradient(135deg, #E30613, #b0020e); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 2.5rem; color: white; }
         .menu-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #eff3f8; cursor: pointer; }
-        .menu-icon { width: 40px; height: 40px; background: #fef2f2; border-radius: 30px; display: flex; align-items: center; justify-content: center; color: #E30613; }
-        .menu-text { flex: 1; font-weight: 500; }
-        .menu-arrow { color: #94a3b8; }
-        .menu-item:active { opacity: 0.7; }
+        .vvip-band-card { background: linear-gradient(135deg, #1a1a1a, #0f0f0f); border-radius: 24px; padding: 20px; margin: 16px; border: 2px solid #E30613; text-align: center; }
     </style>
 </head>
 <body>
@@ -543,7 +314,7 @@
         </div>
         
         <div class="app-main" id="appMain">
-            <!-- HOME TAB - REPLACED WITH VIRTUAL CARD FROM card tab.html -->
+            <!-- HOME TAB with FULL VIRTUAL CARD -->
             <div id="homeTab" class="tab-content active">
                 <div class="balance-hero">
                     <div class="balance-total-label">Total balance</div>
@@ -556,16 +327,13 @@
                 </div>
                 <div id="blockedBanner" style="display:none;" class="blocked-warning"><i class="fas fa-ban"></i> Your account has been blocked.</div>
                 
-                <!-- VIRTUAL CARD SECTION (copied from card tab.html) -->
+                <!-- FULL VIRTUAL CARD SECTION -->
                 <div class="card-section">
                     <div class="section-header"><h3>✦ RANDS VIRTUAL CARD</h3></div>
-                    
-                    <!-- Card with flip functionality -->
                     <div class="card-wrapper-vc" id="cardFlipWrapperVC">
                         <div class="card-flipper-vc">
                             <div class="card-front-vc" id="cardFrontVC">
-                                <div class="shimmer-vc"></div>
-                                <div class="radial-glow-vc"></div>
+                                <div class="shimmer-vc"></div><div class="radial-glow-vc"></div>
                                 <div class="top-section-vc">
                                     <div class="card-logo-vc">RANDS DIGITAL WALLET</div>
                                     <div class="tagline-rfid-row-vc">
@@ -589,11 +357,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Flip hint -->
                     <div class="flip-hint-vc"><i class="fas fa-hand-pointer"></i> tap card to flip & see back side</div>
-
-                    <!-- Gauge (below flip hint) -->
                     <div class="gauge-container-vc">
                         <div class="circular-gauge-vc">
                             <svg viewBox="0 0 120 120">
@@ -611,48 +375,21 @@
                             <button id="demoSpendFullBtnVC" class="demo-spend-full-vc"><i class="fas fa-plus-circle"></i> Simulate Purchase (R250)</button>
                         </div>
                     </div>
-
-                    <!-- Card Buttons (below gauge) -->
                     <div class="action-buttons-row-vc">
                         <button id="toggleThemesBtnVC" class="toggle-btn-vc"><i class="fas fa-palette"></i> Themes</button>
                         <button id="toggleCustomizeBtnVC" class="toggle-btn-vc"><i class="fas fa-sliders-h"></i> Customize</button>
                         <button id="toggleControlsBtnVC" class="toggle-btn-vc"><i class="fas fa-shield-alt"></i> Controls</button>
                         <button id="demoSpendBtnVC" class="toggle-btn-vc demo-spend-btn-vc"><i class="fas fa-shopping-cart"></i> Demo Spend R250</button>
                     </div>
-
-                    <!-- Collapsible Panels -->
-                    <div class="theme-panel-vc" id="themePanelVC">
-                        <div class="panel-title-vc"><i class="fas fa-palette" style="color:#E30613;"></i> Card Themes (10 colors)</div>
-                        <div class="color-swatches-vc" id="colorSwatchesContainerVC"></div>
-                        <div class="note-text-vc"><i class="fas fa-magic"></i> Click any theme to change card background</div>
-                    </div>
-
-                    <div class="editor-panel-vc" id="editorPanelVC">
-                        <div class="panel-title-vc"><i class="fas fa-sliders-h" style="color:#E30613;"></i> Customize card details</div>
-                        <div class="input-group-vc"><input type="text" id="cardNumberInputVC" class="input-field-vc" placeholder="Card Number" value="4532 1234 5678 9012" maxlength="19"><input type="text" id="cardHolderInputVC" class="input-field-vc" placeholder="Cardholder Name" value="Mziwonke KaBuyaphi"></div>
-                        <div class="input-group-vc"><input type="text" id="expiryInputVC" class="input-field-vc" placeholder="Expiry (MM/YY)" value="12/28" maxlength="5"><input type="text" id="cvvInputVC" class="input-field-vc" placeholder="CVV" value="123" maxlength="4"><button id="resetDefaultBtnVC" class="reset-btn-vc"><i class="fas fa-undo-alt"></i> Reset</button></div>
-                    </div>
-
-                    <div class="controls-panel-vc" id="controlsPanelVC">
-                        <div class="panel-title-vc"><i class="fas fa-chart-line" style="color:#E30613;"></i> Spending Limits</div>
-                        <div class="limit-slider-container-vc">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Monthly limit</span><span class="limit-value-vc" id="limitValueDisplayVC">R 0</span></div>
-                            <input type="range" id="spendingLimitSliderVC" class="limit-slider-vc" min="0" max="50000" step="500" value="10000">
-                            <div class="limit-presets-vc">
-                                <button class="preset-btn-vc" data-limit="1000">R1k</button><button class="preset-btn-vc" data-limit="5000">R5k</button>
-                                <button class="preset-btn-vc" data-limit="10000">R10k</button><button class="preset-btn-vc" data-limit="20000">R20k</button>
-                                <button class="preset-btn-vc" data-limit="0">Unlimited</button>
-                            </div>
-                        </div>
-                        <div class="limit-status-vc" id="limitStatusVC"><span id="limitStatusTextVC">No limit set</span></div>
-                        <div class="block-toggle-vc"><label><i class="fas fa-ban"></i> Block Card</label><label class="toggle-switch-vc"><input type="checkbox" id="blockCardToggleVC"><span class="slider-round-vc"></span></label></div>
-                    </div>
+                    <div class="theme-panel-vc" id="themePanelVC"><div class="panel-title-vc"><i class="fas fa-palette" style="color:#E30613;"></i> Card Themes (10 colors)</div><div class="color-swatches-vc" id="colorSwatchesContainerVC"></div><div class="note-text-vc"><i class="fas fa-magic"></i> Click any theme to change card background</div></div>
+                    <div class="editor-panel-vc" id="editorPanelVC"><div class="panel-title-vc"><i class="fas fa-sliders-h" style="color:#E30613;"></i> Customize card details</div><div class="input-group-vc"><input type="text" id="cardNumberInputVC" class="input-field-vc" placeholder="Card Number" value="4532 1234 5678 9012" maxlength="19"><input type="text" id="cardHolderInputVC" class="input-field-vc" placeholder="Cardholder Name" value="Mziwonke KaBuyaphi"></div><div class="input-group-vc"><input type="text" id="expiryInputVC" class="input-field-vc" placeholder="Expiry (MM/YY)" value="12/28" maxlength="5"><input type="text" id="cvvInputVC" class="input-field-vc" placeholder="CVV" value="123" maxlength="4"><button id="resetDefaultBtnVC" class="reset-btn-vc"><i class="fas fa-undo-alt"></i> Reset</button></div></div>
+                    <div class="controls-panel-vc" id="controlsPanelVC"><div class="panel-title-vc"><i class="fas fa-chart-line" style="color:#E30613;"></i> Spending Limits</div><div class="limit-slider-container-vc"><div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Monthly limit</span><span class="limit-value-vc" id="limitValueDisplayVC">R 0</span></div><input type="range" id="spendingLimitSliderVC" class="limit-slider-vc" min="0" max="50000" step="500" value="10000"><div class="limit-presets-vc"><button class="preset-btn-vc" data-limit="1000">R1k</button><button class="preset-btn-vc" data-limit="5000">R5k</button><button class="preset-btn-vc" data-limit="10000">R10k</button><button class="preset-btn-vc" data-limit="20000">R20k</button><button class="preset-btn-vc" data-limit="0">Unlimited</button></div></div><div class="limit-status-vc" id="limitStatusVC"><span id="limitStatusTextVC">No limit set</span></div><div class="block-toggle-vc"><label><i class="fas fa-ban"></i> Block Card</label><label class="toggle-switch-vc"><input type="checkbox" id="blockCardToggleVC"><span class="slider-round-vc"></span></label></div></div>
                 </div>
                 
-                <!-- Keep original action buttons and queue section -->
+                <!-- Action Buttons: Send + Pay (replaces Request button) -->
                 <div class="action-buttons-row">
                     <button class="action-btn send-primary" id="sendMoneyBtn"><i class="fas fa-paper-plane"></i> Send</button>
-                    <button class="action-btn request-secondary" id="requestPaymentBtn"><i class="fas fa-qrcode"></i> Request</button>
+                    <button class="action-btn pay-secondary" id="payNowActionBtn"><i class="fas fa-qrcode"></i> Pay</button>
                 </div>
                 <div class="top-quick-bar" id="topQuickBar">
                     <div class="top-quick-item" id="topPosBtn"><i class="fas fa-cash-register"></i> POS</div>
@@ -660,7 +397,6 @@
                     <div class="top-quick-item" id="topAddMoneyBtn"><i class="fas fa-plus-circle"></i> Add Money</div>
                     <div class="top-quick-item" id="topQueueBtn"><i class="fas fa-clock"></i> Queue</div>
                 </div>
-                
                 <div class="queue-section">
                     <div class="queue-title"><i class="fas fa-users"></i> Virtual Queue</div>
                     <div class="queue-cards">
@@ -670,7 +406,7 @@
                 </div>
             </div>
             
-            <!-- PAY TAB -->
+            <!-- PAY TAB (accessible from bottom nav) -->
             <div id="payTab" class="tab-content">
                 <div class="pay-container">
                     <div class="pay-heading">Scan to Pay</div>
@@ -679,76 +415,28 @@
                     <button class="action-btn pay-tab-pay-btn" id="payTabPayNowBtn"><i class="fas fa-qrcode"></i> Pay Now</button>
                 </div>
             </div>
+            
             <!-- TRANSACTIONS TAB -->
             <div id="transactionsTab" class="tab-content"><div class="ticket-module"><div class="transactions-tabs"><div class="transactions-tab active" data-panel="history">History</div><div class="transactions-tab" data-panel="statement">Statement</div></div><div id="historyPanel" class="transactions-panel active"><div id="fullTransactionList" class="tx-list"></div></div><div id="statementPanel" class="transactions-panel"><div class="statement-header"><h4>Monthly Summary</h4><button class="download-statement-btn" id="downloadAllStatementBtn">Download All</button></div><div id="statementContent"></div></div></div></div>
+            
             <!-- TICKETS TAB -->
-            <div id="cardsTab" class="tab-content">
-                <div class="cards-horizontal">
-                    <div class="card-scroll-item"><div class="event-ticket-card"><div style="font-size:0.7rem;">🎟️ RANDS EVENT TICKET</div><div style="font-weight:700; margin:10px 0;">RANDS SUMMER FEST 2026</div><div>📍 Rands Cape Town • 15 Dec 2026</div><div class="card-mini-actions" style="margin-top: auto;"><button class="mini-btn" id="showEventQRBtn"><i class="fas fa-qrcode"></i> Show</button><button class="mini-btn" id="downloadEventTicketBtn"><i class="fas fa-download"></i> Download</button><button class="mini-btn" id="shareEventTicketBtn"><i class="fab fa-whatsapp"></i> Share</button></div></div></div>
-                    <div class="card-scroll-item">
-                        <div class="cards-card-wrapper" id="cardsCardFlipWrapper">
-                            <div class="cards-card-flipper">
-                                <div class="cards-card-front card-theme-1"><div class="shimmer"></div><div class="radial-glow"></div>
-                                    <div class="top-section"><div class="cards-card-logo">RANDS DIGITAL WALLET</div><div class="tagline-rfid-row"><div class="cards-card-tagline">#See Your Vibe</div><div class="cards-rfid-icon"><i class="fas fa-rss"></i></div></div></div>
-                                    <div class="chip-number-wrapper"><div class="chip-lines"><div class="metal-line"></div><div class="contacts"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="lines-overlay"></div></div><div class="cards-card-number" id="cardsDisplayCardNumber">---- ---- ---- ----</div></div>
-                                    <div class="bottom-section"><div class="expiry-mastercard-row"><div class="expiry-text">EXP <span id="cardsDisplayExpiry">--/--</span></div><div class="mastercard-text">Mastercard</div></div><div class="name-icon-row"><div class="cards-card-name" id="cardsDisplayCardHolder">---</div><div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div></div></div>
-                                </div>
-                                <div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv" id="cardsDisplayCvv">---</div></div></div></div>
-                            </div>
-                        </div>
-                        <div class="cards-flip-hint">👆 tap card to flip</div>
-                        <div class="card-mini-actions"><button class="mini-btn" id="blockCardBtn"><i class="fas fa-ban"></i> Block</button><button class="mini-btn" id="issueNewCardBtn"><i class="fas fa-credit-card"></i> Issue New Card</button></div>
-                    </div>
-                </div>
-                <div class="ticket-module"><div class="section-title"><span>🎟️ My Tickets</span><span id="ticketsTabCountBadge">0</span></div><div id="myTicketsListArea" style="padding: 0 16px 16px 16px;"></div></div>
-                <div class="ticket-module">
-                    <div class="section-title"><span>🛍️ Available Events</span><button id="refreshEventsBtn" style="background:#E30613; color:white; border:none; padding:4px 12px; border-radius:20px; font-size:0.7rem;"><i class="fas fa-sync-alt"></i> Refresh</button></div>
-                    <div id="eventShopListArea" style="padding: 0 16px 16px 16px;"></div>
-                </div>
-            </div>
+            <div id="cardsTab" class="tab-content"><div class="cards-horizontal"><div class="card-scroll-item"><div class="event-ticket-card"><div style="font-size:0.7rem;">🎟️ RANDS EVENT TICKET</div><div style="font-weight:700; margin:10px 0;">RANDS SUMMER FEST 2026</div><div>📍 Rands Cape Town • 15 Dec 2026</div><div class="card-mini-actions" style="margin-top: auto;"><button class="mini-btn" id="showEventQRBtn"><i class="fas fa-qrcode"></i> Show</button><button class="mini-btn" id="downloadEventTicketBtn"><i class="fas fa-download"></i> Download</button><button class="mini-btn" id="shareEventTicketBtn"><i class="fab fa-whatsapp"></i> Share</button></div></div></div><div class="card-scroll-item"><div class="cards-card-wrapper" id="cardsCardFlipWrapper"><div class="cards-card-flipper"><div class="cards-card-front card-theme-1"><div class="shimmer"></div><div class="radial-glow"></div><div class="top-section"><div class="cards-card-logo">RANDS DIGITAL WALLET</div><div class="tagline-rfid-row"><div class="cards-card-tagline">#See Your Vibe</div><div class="cards-rfid-icon"><i class="fas fa-rss"></i></div></div></div><div class="chip-number-wrapper"><div class="chip-lines"><div class="metal-line"></div><div class="contacts"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="lines-overlay"></div></div><div class="cards-card-number" id="cardsDisplayCardNumber">---- ---- ---- ----</div></div><div class="bottom-section"><div class="expiry-mastercard-row"><div class="expiry-text">EXP <span id="cardsDisplayExpiry">--/--</span></div><div class="mastercard-text">Mastercard</div></div><div class="name-icon-row"><div class="cards-card-name" id="cardsDisplayCardHolder">---</div><div class="mastercard-icon"><i class="fab fa-cc-mastercard"></i></div></div></div></div><div class="cards-card-back"><div class="cards-card-back-barcode"><canvas id="cardsCardBackBarcodeCanvas"></canvas></div><div class="signature-area" id="cardsCardSignature"></div><div class="cards-card-bottom-row"><div class="cvv-area"><div class="cards-cvv" id="cardsDisplayCvv">---</div></div></div></div></div></div><div class="cards-flip-hint">👆 tap card to flip</div><div class="card-mini-actions"><button class="mini-btn" id="blockCardBtn"><i class="fas fa-ban"></i> Block</button><button class="mini-btn" id="issueNewCardBtn"><i class="fas fa-credit-card"></i> Issue New Card</button></div></div></div><div class="ticket-module"><div class="section-title"><span>🎟️ My Tickets</span><span id="ticketsTabCountBadge">0</span></div><div id="myTicketsListArea" style="padding: 0 16px 16px 16px;"></div></div><div class="ticket-module"><div class="section-title"><span>🛍️ Available Events</span><button id="refreshEventsBtn" style="background:#E30613; color:white; border:none; padding:4px 12px; border-radius:20px; font-size:0.7rem;"><i class="fas fa-sync-alt"></i> Refresh</button></div><div id="eventShopListArea" style="padding: 0 16px 16px 16px;"></div></div></div>
+            
             <!-- PROFILE TAB -->
-            <div id="profileTab" class="tab-content">
-                <div class="profile-container">
-                    <div class="profile-header">
-                        <div class="profile-avatar" id="profileAvatar"><i class="fas fa-user"></i></div>
-                        <div class="profile-name" id="profileName">Mziwonke KaBuyaphi</div>
-                        <div class="profile-phone" id="profilePhone">0635713652</div>
-                        <div class="verified-badge"><i class="fas fa-check-circle"></i> Identity Verified</div>
-                    </div>
-                    <div class="menu-item" id="editProfileBtn"><div class="menu-icon"><i class="fas fa-user-edit"></i></div><div class="menu-text">Edit Profile</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div>
-                    <div class="menu-item" id="securitySettingsBtn"><div class="menu-icon"><i class="fas fa-shield-alt"></i></div><div class="menu-text">Security Settings</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div>
-                    <div class="menu-item" id="notificationSettingsBtn"><div class="menu-icon"><i class="fas fa-bell"></i></div><div class="menu-text">Notifications</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div>
-                    <div class="menu-item" id="helpCenterBtn"><div class="menu-icon"><i class="fas fa-question-circle"></i></div><div class="menu-text">Help Center</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div>
-                    <div class="menu-item" id="aboutBtn"><div class="menu-icon"><i class="fas fa-info-circle"></i></div><div class="menu-text">About Rands Wallet</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div>
-                </div>
-            </div>
-            <!-- VVIP TAB -->
-            <div id="vvipTab" class="tab-content">
-                <div class="vvip-module">
-                    <div class="section-title"><span>💎 VVIP Experience</span></div>
-                    <div class="vvip-band-card" id="vvipBandCard">
-                        <i class="fas fa-crown" style="font-size: 48px; color: #E30613; margin-bottom: 10px;"></i>
-                        <h3 style="color: #E30613; margin-bottom: 5px;">Your VVIP Wristband</h3>
-                        <p style="color: #a0aec0; font-size: 12px;">Scan this band at the VVIP gate for entry</p>
-                        <div id="vvipBandNumber" class="vvip-band-number">-</div>
-                        <div class="vvip-band-qr" id="vvipBandQR"></div>
-                        <div class="vvip-band-info"><div><i class="fas fa-tag"></i> Band ID: <strong id="bandIdDisplay">-</strong></div><div><i class="fab fa-whatsapp"></i> Linked to: <strong id="bandWalletName">-</strong></div><div><i class="fas fa-check-circle"></i> Status: <strong style="color: #10b981;">Active</strong></div></div>
-                        <button class="print-band-btn" id="printVVIPBandBtn"><i class="fas fa-print"></i> Print VVIP Wristband</button>
-                    </div>
-                </div>
-            </div>
+            <div id="profileTab" class="tab-content"><div class="profile-container"><div class="profile-header"><div class="profile-avatar" id="profileAvatar"><i class="fas fa-user"></i></div><div class="profile-name" id="profileName">Mziwonke KaBuyaphi</div><div class="profile-phone" id="profilePhone">0635713652</div><div class="verified-badge"><i class="fas fa-check-circle"></i> Identity Verified</div></div><div class="menu-item" id="editProfileBtn"><div class="menu-icon"><i class="fas fa-user-edit"></i></div><div class="menu-text">Edit Profile</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div><div class="menu-item" id="securitySettingsBtn"><div class="menu-icon"><i class="fas fa-shield-alt"></i></div><div class="menu-text">Security Settings</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div><div class="menu-item" id="notificationSettingsBtn"><div class="menu-icon"><i class="fas fa-bell"></i></div><div class="menu-text">Notifications</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div><div class="menu-item" id="helpCenterBtn"><div class="menu-icon"><i class="fas fa-question-circle"></i></div><div class="menu-text">Help Center</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div><div class="menu-item" id="aboutBtn"><div class="menu-icon"><i class="fas fa-info-circle"></i></div><div class="menu-text">About Rands Wallet</div><div class="menu-arrow"><i class="fas fa-chevron-right"></i></div></div></div></div>
         </div>
+        
+        <!-- BOTTOM TAB BAR - 5 TABS (removed VVIP, kept Home, Pay, Transactions, Tickets, Profile) -->
         <div class="bottom-tab-bar">
             <div class="tab-nav" data-tab="home"><div class="tab-icon"><i class="fas fa-home"></i></div><div class="tab-label">Home</div></div>
             <div class="tab-nav" data-tab="pay"><div class="tab-icon"><i class="fas fa-qrcode"></i></div><div class="tab-label">Pay</div></div>
             <div class="tab-nav" data-tab="transactions"><div class="tab-icon"><i class="fas fa-list-ul"></i></div><div class="tab-label">Transactions</div></div>
             <div class="tab-nav" data-tab="cards"><div class="tab-icon"><i class="fas fa-ticket-alt"></i></div><div class="tab-label">Tickets</div></div>
             <div class="tab-nav" data-tab="profile"><div class="tab-icon"><i class="fas fa-user"></i></div><div class="tab-label">Profile</div></div>
-            <div class="tab-nav" data-tab="vvip"><div class="tab-icon"><i class="fas fa-gem"></i></div><div class="tab-label">VVIP</div></div>
         </div>
     </div>
 
-    <!-- MODALS (kept original) -->
+    <!-- MODALS -->
     <div id="boozeLockerModal" class="modal"><div class="modal-card"><h3 style="color:#E30613;"><i class="fas fa-lock"></i> My Booze Locker</h3><div id="lockerModalContent" style="max-height:60vh; overflow-y:auto;"><div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeBoozeLockerModalBtn">Close</button><button class="modal-btn btn-confirm" id="storeMoreItemsBtn" style="background:#ff9800;">Store More Items</button></div></div></div>
     <div id="receivePaymentModal" class="modal"><div class="modal-card"><h3>Receive Payment</h3><div class="receive-qr-container"><div id="receiveQrCode"></div><div class="receive-account-id"><span id="receiveAccountIdText"></span><button class="copy-id-btn" id="copyAccountIdBtn">Copy</button></div><div class="receive-instruction">Scan QR with any Rands Wallet to send money.</div></div><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeReceiveModalBtn">Close</button></div></div></div>
     <div id="sendMoneyModal" class="modal"><div class="modal-card"><h3>Send Money</h3><input type="text" id="recipientAccountId" class="input-field" placeholder="Recipient Phone Number"><input type="number" id="sendAmount" class="amount-field" placeholder="Amount (R)"><input type="password" id="senderPin" class="input-field" placeholder="Your 4-digit PIN" maxlength="4"><div class="modal-btns"><button class="modal-btn btn-cancel" id="closeSendMoneyBtn">Cancel</button><button class="modal-btn btn-confirm" id="confirmSendMoneyBtn">Send Money</button></div></div></div>
@@ -759,10 +447,9 @@
 </div>
 
 <script>
-    // ========== ORIGINAL SCRIPT FUNCTIONS (preserved) ==========
+    // ========== ORIGINAL STORAGE & ACCOUNT FUNCTIONS ==========
     const ACCOUNTS_KEY = 'rands_accounts_v2';
     const VVIP_BANDS_KEY = 'vvip_bands';
-    const QUEUES_KEY = 'rands_queues';
     const PAYMENT_REQUESTS_KEY = 'rands_payment_requests';
     const LOCKERS_KEY = 'rands_lockers';
     const PENDING_UNLOCK_KEY = 'rands_pending_unlocks';
@@ -778,7 +465,6 @@
     let managedEvents = [];
     let userTickets = [];
     
-    // Helper functions
     function showToastMsg(msg) { let t = document.getElementById('globalToast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
     function saveAccounts() { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts)); }
     function getCurrentAccount() { return accounts.find(a => a.id === currentAccountId); }
@@ -791,175 +477,17 @@
         saveAccounts(); 
     }
     
-    function loadManagedEvents() {
-        const stored = localStorage.getItem(EVENTS_STORAGE_KEY);
-        managedEvents = stored ? JSON.parse(stored) : [];
-        renderEventShop();
-    }
-    
-    function loadUserTickets() {
-        if (currentAccountId) {
-            const stored = localStorage.getItem(USER_TICKETS_PREFIX + currentAccountId);
-            userTickets = stored ? JSON.parse(stored) : [];
-        } else userTickets = [];
-        renderMyTickets();
-    }
-    
-    function saveUserTickets() {
-        if (currentAccountId) localStorage.setItem(USER_TICKETS_PREFIX + currentAccountId, JSON.stringify(userTickets));
-    }
-    
-    function renderMyTickets() {
-        const container = document.getElementById('myTicketsListArea');
-        const badge = document.getElementById('ticketsTabCountBadge');
-        if (!container) return;
-        if (!userTickets.length) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-ticket-alt"></i> No tickets purchased yet.</div>';
-            if (badge) badge.innerText = '0';
-            return;
-        }
-        if (badge) badge.innerText = userTickets.length;
-        container.innerHTML = userTickets.map(t => `
-            <div class="ticket-item">
-                <div class="ticket-header">
-                    <span class="ticket-event">${escapeHtml(t.eventName)}</span>
-                    <span class="ticket-status">Confirmed</span>
-                </div>
-                <div class="ticket-details">
-                    <span><i class="fas fa-calendar"></i> ${formatDate(t.eventDate)} at ${t.eventTime}</span>
-                    <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.eventLocation)}</span>
-                    <span><i class="fas fa-tag"></i> ${t.ticketType} ×${t.quantity}</span>
-                    <span><i class="fas fa-rand"></i> R${formatPrice(t.totalPaid)}</span>
-                </div>
-                <div class="ticket-footer">
-                    <span class="ticket-id">ID: ${t.id.slice(-8)}</span>
-                    <div class="ticket-actions">
-                        <button onclick="window.showTicketQR && showTicketQR('${t.id}')"><i class="fas fa-qrcode"></i> Show QR</button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    window.showTicketQR = function(ticketId) {
-        const ticket = userTickets.find(t => t.id === ticketId);
-        if (ticket) alert(`🎫 Ticket QR Code\nEvent: ${ticket.eventName}\nData: ${ticket.qrData}`);
-    };
-    
-    function renderEventShop() {
-        const container = document.getElementById('eventShopListArea');
-        if (!container) return;
-        if (!managedEvents.length) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events created yet.</div>';
-            return;
-        }
-        const now = new Date();
-        const upcomingEvents = managedEvents.filter(e => { const eventDate = new Date(e.date); return e.status !== 'ended' && eventDate >= now; });
-        if (upcomingEvents.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events.</div>';
-            return;
-        }
-        container.innerHTML = upcomingEvents.map(event => {
-            const types = ['earlyBird', 'general', 'vip'];
-            const typeLabels = { earlyBird: '🎟️ Early Bird', general: '👥 General Admission', vip: '👑 VIP Experience' };
-            const priceButtons = types.map(t => {
-                const tt = event.ticketTypes[t];
-                if (!tt) return '';
-                const remaining = tt.capacity - tt.sold;
-                if (remaining <= 0) return `<span class="price-tag" style="background:#e2e8f0; color:#666; cursor:default;">${typeLabels[t]} Sold Out</span>`;
-                return `<button class="price-tag" onclick="window.initiatePurchase && initiatePurchase('${event.id}', '${t}', ${tt.price})">${typeLabels[t]} - R${formatPrice(tt.price)} (${remaining} left)</button>`;
-            }).join('');
-            const bannerStyle = event.imageData ? `background-image: url(${event.imageData}); background-size: cover; background-position: center;` : '';
-            return `
-                <div class="event-shop-item" style="overflow:hidden;">
-                    ${event.imageData ? `<div style="height:120px; ${bannerStyle} border-radius:16px; margin-bottom:12px;"></div>` : ''}
-                    <div class="event-shop-title">${escapeHtml(event.name)}</div>
-                    <div class="event-shop-date"><i class="fas fa-calendar-alt"></i> ${formatDate(event.date)} at ${event.time}</div>
-                    <div class="event-shop-date"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</div>
-                    <div class="event-ticket-prices">${priceButtons}</div>
-                </div>
-            `;
-        }).join('');
-    }
-    
+    function loadManagedEvents() { const stored = localStorage.getItem(EVENTS_STORAGE_KEY); managedEvents = stored ? JSON.parse(stored) : []; renderEventShop(); }
+    function loadUserTickets() { if (currentAccountId) { const stored = localStorage.getItem(USER_TICKETS_PREFIX + currentAccountId); userTickets = stored ? JSON.parse(stored) : []; } else userTickets = []; renderMyTickets(); }
+    function saveUserTickets() { if (currentAccountId) localStorage.setItem(USER_TICKETS_PREFIX + currentAccountId, JSON.stringify(userTickets)); }
+    function renderMyTickets() { const container = document.getElementById('myTicketsListArea'); const badge = document.getElementById('ticketsTabCountBadge'); if (!container) return; if (!userTickets.length) { container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-ticket-alt"></i> No tickets purchased yet.</div>'; if (badge) badge.innerText = '0'; return; } if (badge) badge.innerText = userTickets.length; container.innerHTML = userTickets.map(t => `<div class="ticket-item"><div class="ticket-header"><span class="ticket-event">${escapeHtml(t.eventName)}</span><span class="ticket-status">Confirmed</span></div><div class="ticket-details"><span><i class="fas fa-calendar"></i> ${formatDate(t.eventDate)} at ${t.eventTime}</span><span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.eventLocation)}</span><span><i class="fas fa-tag"></i> ${t.ticketType} ×${t.quantity}</span><span><i class="fas fa-rand"></i> R${formatPrice(t.totalPaid)}</span></div><div class="ticket-footer"><span class="ticket-id">ID: ${t.id.slice(-8)}</span><div class="ticket-actions"><button onclick="window.showTicketQR && showTicketQR('${t.id}')"><i class="fas fa-qrcode"></i> Show QR</button></div></div></div>`).join(''); }
+    window.showTicketQR = function(ticketId) { const ticket = userTickets.find(t => t.id === ticketId); if (ticket) alert(`🎫 Ticket QR Code\nEvent: ${ticket.eventName}\nData: ${ticket.qrData}`); };
+    function renderEventShop() { const container = document.getElementById('eventShopListArea'); if (!container) return; if (!managedEvents.length) { container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-calendar-times"></i> No events created yet.</div>'; return; } const now = new Date(); const upcomingEvents = managedEvents.filter(e => { const eventDate = new Date(e.date); return e.status !== 'ended' && eventDate >= now; }); if (upcomingEvents.length === 0) { container.innerHTML = '<div style="text-align:center; padding:30px; color:#999;"><i class="fas fa-hourglass-end"></i> No upcoming events.</div>'; return; } container.innerHTML = upcomingEvents.map(event => { const types = ['earlyBird', 'general', 'vip']; const typeLabels = { earlyBird: '🎟️ Early Bird', general: '👥 General Admission', vip: '👑 VIP Experience' }; const priceButtons = types.map(t => { const tt = event.ticketTypes[t]; if (!tt) return ''; const remaining = tt.capacity - tt.sold; if (remaining <= 0) return `<span class="price-tag" style="background:#e2e8f0; color:#666; cursor:default;">${typeLabels[t]} Sold Out</span>`; return `<button class="price-tag" onclick="window.initiatePurchase && initiatePurchase('${event.id}', '${t}', ${tt.price})">${typeLabels[t]} - R${formatPrice(tt.price)} (${remaining} left)</button>`; }).join(''); const bannerStyle = event.imageData ? `background-image: url(${event.imageData}); background-size: cover; background-position: center;` : ''; return `<div class="event-shop-item" style="overflow:hidden;">${event.imageData ? `<div style="height:120px; ${bannerStyle} border-radius:16px; margin-bottom:12px;"></div>` : ''}<div class="event-shop-title">${escapeHtml(event.name)}</div><div class="event-shop-date"><i class="fas fa-calendar-alt"></i> ${formatDate(event.date)} at ${event.time}</div><div class="event-shop-date"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</div><div class="event-ticket-prices">${priceButtons}</div></div>`; }).join(''); }
     let pendingPurchase = null;
-    window.initiatePurchase = function(eventId, ticketType, price) {
-        const event = managedEvents.find(e => e.id === eventId);
-        if (!event) return;
-        const tt = event.ticketTypes[ticketType];
-        if (!tt || tt.sold >= tt.capacity) { showToastMsg("Ticket type sold out"); return; }
-        pendingPurchase = { eventId, ticketType, price, eventName: event.name, maxQty: tt.capacity - tt.sold };
-        document.getElementById('purchaseDetails').innerHTML = `
-            <p><strong>${escapeHtml(event.name)}</strong></p>
-            <p>Ticket: ${ticketType}</p>
-            <p>Price per ticket: R${formatPrice(price)}</p>
-            <p>Quantity: <input type="number" id="purchaseQty" min="1" max="${tt.capacity - tt.sold}" value="1" style="width:80px; padding:8px; border-radius:12px; border:1px solid #ccc;"></p>
-            <p>Total: R<span id="purchaseTotal">${formatPrice(price)}</span></p>
-        `;
-        const qtyInput = document.getElementById('purchaseQty');
-        if (qtyInput) {
-            qtyInput.addEventListener('input', () => {
-                const qty = parseInt(qtyInput.value) || 1;
-                const total = qty * price;
-                document.getElementById('purchaseTotal').innerText = formatPrice(total);
-            });
-        }
-        document.getElementById('ticketPurchaseModal').classList.add('active');
-    };
-    
-    document.getElementById('confirmPurchaseBtn')?.addEventListener('click', () => {
-        if (!pendingPurchase) return;
-        const qty = parseInt(document.getElementById('purchaseQty')?.value || '1');
-        if (isNaN(qty) || qty < 1) { showToastMsg("Invalid quantity"); return; }
-        const total = qty * pendingPurchase.price;
-        purchaseTicket(pendingPurchase.eventId, pendingPurchase.ticketType, qty, total);
-        document.getElementById('ticketPurchaseModal').classList.remove('active');
-        pendingPurchase = null;
-    });
-    document.getElementById('closePurchaseModalBtn')?.addEventListener('click', () => {
-        document.getElementById('ticketPurchaseModal').classList.remove('active');
-        pendingPurchase = null;
-    });
-    
-    function purchaseTicket(eventId, ticketType, quantity, totalPrice) {
-        const event = managedEvents.find(e => e.id === eventId);
-        if (!event) { showToastMsg("Event not found"); return false; }
-        const ticketInfo = event.ticketTypes[ticketType];
-        if (!ticketInfo) { showToastMsg("Invalid ticket type"); return false; }
-        const remaining = ticketInfo.capacity - ticketInfo.sold;
-        if (quantity > remaining) { showToastMsg(`Only ${remaining} tickets left`); return false; }
-        const account = getCurrentAccount();
-        if (account.balance < totalPrice) { showToastMsg("Insufficient balance"); return false; }
-        account.balance -= totalPrice;
-        saveAccounts();
-        addTransaction(`Purchased ${quantity}x ${event.name} (${ticketType})`, -totalPrice);
-        const eventIndex = managedEvents.findIndex(e => e.id === eventId);
-        if (eventIndex !== -1) {
-            managedEvents[eventIndex].ticketTypes[ticketType].sold += quantity;
-            localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(managedEvents));
-        }
-        const ticketRecord = {
-            id: 'tkt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-            eventId: event.id,
-            eventName: event.name,
-            eventDate: event.date,
-            eventTime: event.time,
-            eventLocation: event.location,
-            ticketType: ticketType,
-            quantity: quantity,
-            pricePerTicket: ticketInfo.price,
-            totalPaid: totalPrice,
-            purchaseDate: new Date().toISOString(),
-            qrData: `${event.id}|${ticketType}|${Date.now()}`
-        };
-        userTickets.push(ticketRecord);
-        saveUserTickets();
-        renderMyTickets();
-        renderEventShop();
-        showToastMsg(`Success! ${quantity}x ${ticketType} ticket(s) purchased.`);
-        return true;
-    }
-    
+    window.initiatePurchase = function(eventId, ticketType, price) { const event = managedEvents.find(e => e.id === eventId); if (!event) return; const tt = event.ticketTypes[ticketType]; if (!tt || tt.sold >= tt.capacity) { showToastMsg("Ticket type sold out"); return; } pendingPurchase = { eventId, ticketType, price, eventName: event.name, maxQty: tt.capacity - tt.sold }; document.getElementById('purchaseDetails').innerHTML = `<p><strong>${escapeHtml(event.name)}</strong></p><p>Ticket: ${ticketType}</p><p>Price per ticket: R${formatPrice(price)}</p><p>Quantity: <input type="number" id="purchaseQty" min="1" max="${tt.capacity - tt.sold}" value="1" style="width:80px; padding:8px; border-radius:12px; border:1px solid #ccc;"></p><p>Total: R<span id="purchaseTotal">${formatPrice(price)}</span></p>`; const qtyInput = document.getElementById('purchaseQty'); if (qtyInput) qtyInput.addEventListener('input', () => { const qty = parseInt(qtyInput.value) || 1; document.getElementById('purchaseTotal').innerText = formatPrice(qty * price); }); document.getElementById('ticketPurchaseModal').classList.add('active'); };
+    document.getElementById('confirmPurchaseBtn')?.addEventListener('click', () => { if (!pendingPurchase) return; const qty = parseInt(document.getElementById('purchaseQty')?.value || '1'); if (isNaN(qty) || qty < 1) { showToastMsg("Invalid quantity"); return; } const total = qty * pendingPurchase.price; purchaseTicket(pendingPurchase.eventId, pendingPurchase.ticketType, qty, total); document.getElementById('ticketPurchaseModal').classList.remove('active'); pendingPurchase = null; });
+    document.getElementById('closePurchaseModalBtn')?.addEventListener('click', () => { document.getElementById('ticketPurchaseModal').classList.remove('active'); pendingPurchase = null; });
+    function purchaseTicket(eventId, ticketType, quantity, totalPrice) { const event = managedEvents.find(e => e.id === eventId); if (!event) { showToastMsg("Event not found"); return false; } const ticketInfo = event.ticketTypes[ticketType]; if (!ticketInfo) { showToastMsg("Invalid ticket type"); return false; } const remaining = ticketInfo.capacity - ticketInfo.sold; if (quantity > remaining) { showToastMsg(`Only ${remaining} tickets left`); return false; } const account = getCurrentAccount(); if (account.balance < totalPrice) { showToastMsg("Insufficient balance"); return false; } account.balance -= totalPrice; saveAccounts(); addTransaction(`Purchased ${quantity}x ${event.name} (${ticketType})`, -totalPrice); const eventIndex = managedEvents.findIndex(e => e.id === eventId); if (eventIndex !== -1) { managedEvents[eventIndex].ticketTypes[ticketType].sold += quantity; localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(managedEvents)); } const ticketRecord = { id: 'tkt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6), eventId: event.id, eventName: event.name, eventDate: event.date, eventTime: event.time, eventLocation: event.location, ticketType: ticketType, quantity: quantity, pricePerTicket: ticketInfo.price, totalPaid: totalPrice, purchaseDate: new Date().toISOString(), qrData: `${event.id}|${ticketType}|${Date.now()}` }; userTickets.push(ticketRecord); saveUserTickets(); renderMyTickets(); renderEventShop(); showToastMsg(`Success! ${quantity}x ${ticketType} ticket(s) purchased.`); return true; }
     function loadLockers() { const stored = localStorage.getItem(LOCKERS_KEY); if (stored) lockers = JSON.parse(stored); else { lockers = [{ id: 1, lockerNumber: 1, customer: "Mziwonke KaBuyaphi", phone: "0635713652", pin: "1989", items: [{ name: "Heineken 6-pack", price: 89.99 }], itemsText: "Heineken 6-pack", status: "Occupied", balance: 89.99, registrationTime: new Date().toISOString() }, { id: 2, lockerNumber: 2, customer: "", phone: "", pin: "", items: [], itemsText: "", status: "Available", balance: 0, registrationTime: null }]; localStorage.setItem(LOCKERS_KEY, JSON.stringify(lockers)); } }
     function loadPendingUnlocks() { const stored = localStorage.getItem(PENDING_UNLOCK_KEY); pendingUnlocks = stored ? JSON.parse(stored) : []; updatePendingIndicator(); }
     function updatePendingIndicator() { if (!currentAccountId) return; const hasPending = pendingUnlocks.some(req => req.phone === currentAccountId); const indicator = document.getElementById('pendingRequestIndicator'); if (indicator) indicator.style.display = hasPending ? 'inline-flex' : 'none'; }
@@ -972,251 +500,43 @@
     function generateSignature(name) { return name.split(' ')[0].toLowerCase() + " ✍️  " + (name.split(' ').pop()?.substring(0,2) || "OK").toUpperCase(); }
     function updateProfileTab() { const acc = getCurrentAccount(); if (!acc) return; document.getElementById('profileName').innerText = acc.name; document.getElementById('profilePhone').innerText = acc.phone; const avatarDiv = document.getElementById('profileAvatar'); if (acc.selfie) avatarDiv.innerHTML = `<img src="${acc.selfie}" alt="Profile">`; else avatarDiv.innerHTML = `<span style="font-size:2rem;">${acc.name.charAt(0).toUpperCase()}</span>`; }
     
-    // VIRTUAL CARD FUNCTIONS (from card tab.html)
+    // ========== VIRTUAL CARD LOGIC ==========
     let currentSpending = 3250;
     let spendingLimitVC = 10000;
     let isBlockedVC = false;
-    let lastToastWasLimit = false;
-    const circumference = 2 * Math.PI * 52;
+    const circumferenceVC = 2 * Math.PI * 52;
+    function updateGaugeVC() { let percent = 0; if (spendingLimitVC > 0) percent = Math.min(100, (currentSpending / spendingLimitVC) * 100); const offset = circumferenceVC - (percent / 100) * circumferenceVC; const gaugeFill = document.getElementById('gaugeFillVC'); if (gaugeFill) gaugeFill.style.strokeDashoffset = offset; const gaugePercent = document.getElementById('gaugePercentVC'); if (gaugePercent) gaugePercent.innerText = `${Math.round(percent)}%`; const gaugeSpent = document.getElementById('gaugeSpentVC'); const gaugeLimit = document.getElementById('gaugeLimitVC'); const gaugeRemaining = document.getElementById('gaugeRemainingVC'); if (gaugeSpent) gaugeSpent.innerText = `R ${currentSpending.toLocaleString()}`; if (gaugeLimit) gaugeLimit.innerText = spendingLimitVC === 0 ? "Unlimited" : `R ${spendingLimitVC.toLocaleString()}`; let remaining = spendingLimitVC === 0 ? Infinity : spendingLimitVC - currentSpending; if (gaugeRemaining) { if (spendingLimitVC === 0) gaugeRemaining.innerText = "No limit set"; else if (remaining < 0) gaugeRemaining.innerText = `⚠️ Exceeded by R ${Math.abs(remaining).toLocaleString()}`; else gaugeRemaining.innerText = `Remaining: R ${remaining.toLocaleString()}`; } }
+    function addSpendingVC(amount) { if (isBlockedVC) { showToastMsg("🔒 Card is BLOCKED. Cannot make purchase."); return false; } if (spendingLimitVC > 0 && currentSpending + amount > spendingLimitVC) { showToastMsg(`❌ Transaction declined! Would exceed R ${spendingLimitVC.toLocaleString()} limit.`); return false; } currentSpending += amount; updateGaugeVC(); updateLimitDisplayVC(); showToastMsg(`💳 Purchase of R ${amount.toLocaleString()} completed successfully!`); return true; }
+    function updateLimitDisplayVC() { const limitValueDisplay = document.getElementById('limitValueDisplayVC'); const limitStatusText = document.getElementById('limitStatusTextVC'); if (limitValueDisplay) limitValueDisplay.innerText = spendingLimitVC === 0 ? "Unlimited" : `R ${spendingLimitVC.toLocaleString()}`; let remaining = spendingLimitVC === 0 ? Infinity : spendingLimitVC - currentSpending; if (limitStatusText) { if (spendingLimitVC === 0) limitStatusText.innerHTML = `📊 Monthly spent: R ${currentSpending.toLocaleString()} | No limit set`; else if (remaining < 0) limitStatusText.innerHTML = `⚠️ LIMIT EXCEEDED! Spent R ${currentSpending.toLocaleString()} of R ${spendingLimitVC.toLocaleString()}`; else limitStatusText.innerHTML = `📊 Spent R ${currentSpending.toLocaleString()} of R ${spendingLimitVC.toLocaleString()} | Remaining: R ${remaining.toLocaleString()}`; } updateGaugeVC(); }
+    function setSpendingLimitVC(value) { spendingLimitVC = value; const slider = document.getElementById('spendingLimitSliderVC'); if (slider) slider.value = value; updateLimitDisplayVC(); showToastMsg(`Spending limit set to ${spendingLimitVC === 0 ? 'Unlimited' : 'R ' + spendingLimitVC.toLocaleString()}`); }
+    function updateBlockedStateVC() { const cardFront = document.getElementById('cardFrontVC'); if (isBlockedVC) { if(cardFront) cardFront.classList.add('blocked'); showToastMsg("🔒 Card has been BLOCKED"); } else { if(cardFront) cardFront.classList.remove('blocked'); showToastMsg("🔓 Card is now ACTIVE"); } }
+    const themesVC = [{ name: "Rands Red", gradient: "linear-gradient(135deg, #E30613 0%, #b0020e 100%)" },{ name: "Midnight Sapphire", gradient: "linear-gradient(135deg, #0F2027, #203A43, #2C5364)" },{ name: "Royal Purple", gradient: "linear-gradient(135deg, #8E2DE2, #4A00E0)" },{ name: "Ocean Teal", gradient: "linear-gradient(135deg, #00B4DB, #0083B0)" },{ name: "Forest Emerald", gradient: "linear-gradient(135deg, #11998E, #38EF7D)" },{ name: "Sunset Amber", gradient: "linear-gradient(135deg, #F09819, #FF512F)" },{ name: "Velvet Rose", gradient: "linear-gradient(135deg, #D4145A, #3A1C71)" },{ name: "Electric Cobalt", gradient: "linear-gradient(135deg, #1CB5E0, #000046)" },{ name: "Luxury Gold", gradient: "linear-gradient(135deg, #D4AF37, #8B5A2B)" },{ name: "Slate Graphite", gradient: "linear-gradient(135deg, #2C3E50, #4CA1AF)" }];
+    function applyThemeVC(index) { const cardFront = document.getElementById('cardFrontVC'); if (cardFront && index >= 0 && index < themesVC.length) { cardFront.style.background = themesVC[index].gradient; document.querySelectorAll('.color-swatch-vc').forEach((swatch, i) => { if (i === index) swatch.classList.add('active'); else swatch.classList.remove('active'); }); showToastMsg(`Theme changed to ${themesVC[index].name}`); } }
+    function buildSwatchesVC() { const container = document.getElementById('colorSwatchesContainerVC'); if (!container) return; container.innerHTML = ''; themesVC.forEach((theme, idx) => { const swatch = document.createElement('div'); swatch.className = 'color-swatch-vc'; if (idx === 0) swatch.classList.add('active'); swatch.style.background = theme.gradient; swatch.addEventListener('click', (e) => { e.stopPropagation(); applyThemeVC(idx); }); container.appendChild(swatch); }); }
+    function refreshCardVC() { const cardNumberInput = document.getElementById('cardNumberInputVC'); const cardHolderInput = document.getElementById('cardHolderInputVC'); const expiryInput = document.getElementById('expiryInputVC'); const cvvInput = document.getElementById('cvvInputVC'); const displayCardNumber = document.getElementById('displayCardNumberVC'); const displayCardHolder = document.getElementById('displayCardHolderVC'); const displayExpiry = document.getElementById('displayExpiryVC'); const displayCvv = document.getElementById('displayCvvVC'); const cardSignature = document.getElementById('cardSignatureVC'); if (cardNumberInput && displayCardNumber) { let rawCardNum = cardNumberInput.value.trim(); let digitsOnly = rawCardNum.replace(/\s/g, ''); let formatted = ''; for (let i = 0; i < digitsOnly.length; i += 4) formatted += digitsOnly.substr(i, 4) + ' '; formatted = formatted.trim(); if (formatted === "") formatted = "•••• •••• •••• ••••"; displayCardNumber.innerText = formatted.length > 19 ? formatted.substring(0, 19) : formatted; } if (cardHolderInput && displayCardHolder) displayCardHolder.innerText = (cardHolderInput.value.trim().toUpperCase() || "CARDHOLDER").substring(0, 25); if (expiryInput && displayExpiry) displayExpiry.innerText = expiryInput.value.trim() || "**/**"; if (cvvInput && displayCvv) displayCvv.innerText = cvvInput.value.trim() || "***"; if (cardHolderInput && cardSignature) { let name = cardHolderInput.value.trim(); let signature = name ? name.split(' ')[0].toLowerCase() + " ✍️  " + (name.split(' ').pop()?.substring(0,2) || "OK").toUpperCase() : "user ✍️ OK"; cardSignature.innerText = signature; } const barcodeCanvas = document.getElementById('cardBackBarcodeCanvasVC'); if (barcodeCanvas && getCurrentAccount()) { JsBarcode(barcodeCanvas, getCurrentAccount().id, { format: "CODE128", width: 2, height: 45, displayValue: false, background: "#ffffff", lineColor: "#1e293b" }); } }
+    function resetToDefaultVC() { const cardNumberInput = document.getElementById('cardNumberInputVC'); const cardHolderInput = document.getElementById('cardHolderInputVC'); const expiryInput = document.getElementById('expiryInputVC'); const cvvInput = document.getElementById('cvvInputVC'); if (cardNumberInput) cardNumberInput.value = "4532 1234 5678 9012"; if (cardHolderInput) cardHolderInput.value = "Mziwonke KaBuyaphi"; if (expiryInput) expiryInput.value = "12/28"; if (cvvInput) cvvInput.value = "123"; refreshCardVC(); showToastMsg("✓ Card details restored"); }
+    function initVirtualCard() { buildSwatchesVC(); refreshCardVC(); applyThemeVC(0); setSpendingLimitVC(10000); updateGaugeVC(); const cardWrapper = document.getElementById('cardFlipWrapperVC'); if (cardWrapper) cardWrapper.addEventListener('click', () => { cardWrapper.classList.toggle('flipped'); }); document.getElementById('toggleThemesBtnVC')?.addEventListener('click', () => { document.getElementById('themePanelVC')?.classList.toggle('visible'); }); document.getElementById('toggleCustomizeBtnVC')?.addEventListener('click', () => { document.getElementById('editorPanelVC')?.classList.toggle('visible'); }); document.getElementById('toggleControlsBtnVC')?.addEventListener('click', () => { document.getElementById('controlsPanelVC')?.classList.toggle('visible'); }); document.getElementById('demoSpendBtnVC')?.addEventListener('click', () => addSpendingVC(250)); document.getElementById('demoSpendFullBtnVC')?.addEventListener('click', () => addSpendingVC(250)); document.getElementById('resetDefaultBtnVC')?.addEventListener('click', resetToDefaultVC); document.getElementById('cardNumberInputVC')?.addEventListener('input', () => refreshCardVC()); document.getElementById('cardHolderInputVC')?.addEventListener('input', () => refreshCardVC()); document.getElementById('expiryInputVC')?.addEventListener('input', () => refreshCardVC()); document.getElementById('cvvInputVC')?.addEventListener('input', () => refreshCardVC()); document.getElementById('spendingLimitSliderVC')?.addEventListener('input', (e) => setSpendingLimitVC(parseInt(e.target.value))); document.querySelectorAll('.preset-btn-vc').forEach(btn => { btn.addEventListener('click', () => setSpendingLimitVC(parseInt(btn.getAttribute('data-limit')))); }); document.getElementById('blockCardToggleVC')?.addEventListener('change', (e) => { isBlockedVC = e.target.checked; updateBlockedStateVC(); }); }
     
-    function updateGaugeVC() {
-        let percent = 0;
-        if (spendingLimitVC > 0) percent = Math.min(100, (currentSpending / spendingLimitVC) * 100);
-        const offset = circumference - (percent / 100) * circumference;
-        const gaugeFill = document.getElementById('gaugeFillVC');
-        if (gaugeFill) {
-            gaugeFill.style.strokeDasharray = `${circumference}`;
-            gaugeFill.style.strokeDashoffset = offset;
-        }
-        const gaugePercent = document.getElementById('gaugePercentVC');
-        if (gaugePercent) gaugePercent.innerText = `${Math.round(percent)}%`;
-        const gaugeSpent = document.getElementById('gaugeSpentVC');
-        const gaugeLimit = document.getElementById('gaugeLimitVC');
-        const gaugeRemaining = document.getElementById('gaugeRemainingVC');
-        if (gaugeSpent) gaugeSpent.innerText = `R ${currentSpending.toLocaleString()}`;
-        if (gaugeLimit) gaugeLimit.innerText = spendingLimitVC === 0 ? "Unlimited" : `R ${spendingLimitVC.toLocaleString()}`;
-        let remaining = spendingLimitVC === 0 ? Infinity : spendingLimitVC - currentSpending;
-        if (gaugeRemaining) {
-            if (spendingLimitVC === 0) gaugeRemaining.innerText = "No limit set";
-            else if (remaining < 0) gaugeRemaining.innerText = `⚠️ Exceeded by R ${Math.abs(remaining).toLocaleString()}`;
-            else gaugeRemaining.innerText = `Remaining: R ${remaining.toLocaleString()}`;
-        }
-    }
-    
-    function addSpendingVC(amount) {
-        if (isBlockedVC) { showToastMsg("🔒 Card is BLOCKED. Cannot make purchase."); return false; }
-        if (spendingLimitVC > 0 && currentSpending + amount > spendingLimitVC) { showToastMsg(`❌ Transaction declined! Would exceed R ${spendingLimitVC.toLocaleString()} limit.`); return false; }
-        currentSpending += amount;
-        updateGaugeVC();
-        updateLimitDisplayVC();
-        showToastMsg(`💳 Purchase of R ${amount.toLocaleString()} completed successfully!`);
-        return true;
-    }
-    
-    function updateLimitDisplayVC() {
-        const limitValueDisplay = document.getElementById('limitValueDisplayVC');
-        const limitStatusText = document.getElementById('limitStatusTextVC');
-        if (limitValueDisplay) limitValueDisplay.innerText = spendingLimitVC === 0 ? "Unlimited" : `R ${spendingLimitVC.toLocaleString()}`;
-        let remaining = spendingLimitVC === 0 ? Infinity : spendingLimitVC - currentSpending;
-        if (limitStatusText) {
-            if (spendingLimitVC === 0) limitStatusText.innerHTML = `📊 Monthly spent: R ${currentSpending.toLocaleString()} | No limit set`;
-            else if (remaining < 0) limitStatusText.innerHTML = `⚠️ LIMIT EXCEEDED! Spent R ${currentSpending.toLocaleString()} of R ${spendingLimitVC.toLocaleString()}`;
-            else limitStatusText.innerHTML = `📊 Spent R ${currentSpending.toLocaleString()} of R ${spendingLimitVC.toLocaleString()} | Remaining: R ${remaining.toLocaleString()}`;
-        }
-        updateGaugeVC();
-    }
-    
-    function setSpendingLimitVC(value) {
-        spendingLimitVC = value;
-        const slider = document.getElementById('spendingLimitSliderVC');
-        if (slider) slider.value = value;
-        updateLimitDisplayVC();
-        showToastMsg(`Spending limit set to ${spendingLimitVC === 0 ? 'Unlimited' : 'R ' + spendingLimitVC.toLocaleString()}`);
-    }
-    
-    function updateBlockedStateVC() {
-        const cardFront = document.getElementById('cardFrontVC');
-        if (isBlockedVC) { if(cardFront) cardFront.classList.add('blocked'); showToastMsg("🔒 Card has been BLOCKED"); }
-        else { if(cardFront) cardFront.classList.remove('blocked'); showToastMsg("🔓 Card is now ACTIVE"); }
-    }
-    
-    const themesVC = [
-        { name: "Rands Red", gradient: "linear-gradient(135deg, #E30613 0%, #b0020e 100%)" },
-        { name: "Midnight Sapphire", gradient: "linear-gradient(135deg, #0F2027, #203A43, #2C5364)" },
-        { name: "Royal Purple", gradient: "linear-gradient(135deg, #8E2DE2, #4A00E0)" },
-        { name: "Ocean Teal", gradient: "linear-gradient(135deg, #00B4DB, #0083B0)" },
-        { name: "Forest Emerald", gradient: "linear-gradient(135deg, #11998E, #38EF7D)" },
-        { name: "Sunset Amber", gradient: "linear-gradient(135deg, #F09819, #FF512F)" },
-        { name: "Velvet Rose", gradient: "linear-gradient(135deg, #D4145A, #3A1C71)" },
-        { name: "Electric Cobalt", gradient: "linear-gradient(135deg, #1CB5E0, #000046)" },
-        { name: "Luxury Gold", gradient: "linear-gradient(135deg, #D4AF37, #8B5A2B)" },
-        { name: "Slate Graphite", gradient: "linear-gradient(135deg, #2C3E50, #4CA1AF)" }
-    ];
-    
-    function applyThemeVC(index) {
-        const cardFront = document.getElementById('cardFrontVC');
-        if (cardFront && index >= 0 && index < themesVC.length) {
-            cardFront.style.background = themesVC[index].gradient;
-            document.querySelectorAll('.color-swatch-vc').forEach((swatch, i) => {
-                if (i === index) swatch.classList.add('active');
-                else swatch.classList.remove('active');
-            });
-            showToastMsg(`Theme changed to ${themesVC[index].name}`);
-        }
-    }
-    
-    function buildSwatchesVC() {
-        const container = document.getElementById('colorSwatchesContainerVC');
-        if (!container) return;
-        container.innerHTML = '';
-        themesVC.forEach((theme, idx) => {
-            const swatch = document.createElement('div');
-            swatch.className = 'color-swatch-vc';
-            if (idx === 0) swatch.classList.add('active');
-            swatch.style.background = theme.gradient;
-            swatch.addEventListener('click', (e) => { e.stopPropagation(); applyThemeVC(idx); });
-            container.appendChild(swatch);
-        });
-    }
-    
-    function refreshCardVC() {
-        const cardNumberInput = document.getElementById('cardNumberInputVC');
-        const cardHolderInput = document.getElementById('cardHolderInputVC');
-        const expiryInput = document.getElementById('expiryInputVC');
-        const cvvInput = document.getElementById('cvvInputVC');
-        const displayCardNumber = document.getElementById('displayCardNumberVC');
-        const displayCardHolder = document.getElementById('displayCardHolderVC');
-        const displayExpiry = document.getElementById('displayExpiryVC');
-        const displayCvv = document.getElementById('displayCvvVC');
-        const cardSignature = document.getElementById('cardSignatureVC');
-        
-        if (cardNumberInput && displayCardNumber) {
-            let rawCardNum = cardNumberInput.value.trim();
-            let digitsOnly = rawCardNum.replace(/\s/g, '');
-            let formatted = '';
-            for (let i = 0; i < digitsOnly.length; i += 4) formatted += digitsOnly.substr(i, 4) + ' ';
-            formatted = formatted.trim();
-            if (formatted === "") formatted = "•••• •••• •••• ••••";
-            displayCardNumber.innerText = formatted.length > 19 ? formatted.substring(0, 19) : formatted;
-        }
-        if (cardHolderInput && displayCardHolder) displayCardHolder.innerText = (cardHolderInput.value.trim().toUpperCase() || "CARDHOLDER").substring(0, 25);
-        if (expiryInput && displayExpiry) displayExpiry.innerText = expiryInput.value.trim() || "**/**";
-        if (cvvInput && displayCvv) displayCvv.innerText = cvvInput.value.trim() || "***";
-        if (cardHolderInput && cardSignature) {
-            let name = cardHolderInput.value.trim();
-            let signature = name ? name.split(' ')[0].toLowerCase() + " ✍️  " + (name.split(' ').pop()?.substring(0,2) || "OK").toUpperCase() : "user ✍️ OK";
-            cardSignature.innerText = signature;
-        }
-        // Generate barcode on back of VC
-        const barcodeCanvas = document.getElementById('cardBackBarcodeCanvasVC');
-        if (barcodeCanvas && getCurrentAccount()) {
-            JsBarcode(barcodeCanvas, getCurrentAccount().id, { format: "CODE128", width: 2, height: 45, displayValue: false, background: "#ffffff", lineColor: "#1e293b" });
-        }
-    }
-    
-    function resetToDefaultVC() {
-        const cardNumberInput = document.getElementById('cardNumberInputVC');
-        const cardHolderInput = document.getElementById('cardHolderInputVC');
-        const expiryInput = document.getElementById('expiryInputVC');
-        const cvvInput = document.getElementById('cvvInputVC');
-        if (cardNumberInput) cardNumberInput.value = "4532 1234 5678 9012";
-        if (cardHolderInput) cardHolderInput.value = "Mziwonke KaBuyaphi";
-        if (expiryInput) expiryInput.value = "12/28";
-        if (cvvInput) cvvInput.value = "123";
-        refreshCardVC();
-        showToastMsg("✓ Card details restored");
-    }
-    
-    function initVirtualCard() {
-        buildSwatchesVC();
-        refreshCardVC();
-        applyThemeVC(0);
-        setSpendingLimitVC(10000);
-        updateGaugeVC();
-        
-        // Event listeners for VC
-        const cardWrapper = document.getElementById('cardFlipWrapperVC');
-        if (cardWrapper) {
-            cardWrapper.addEventListener('click', () => { cardWrapper.classList.toggle('flipped'); });
-        }
-        
-        document.getElementById('toggleThemesBtnVC')?.addEventListener('click', () => {
-            const panel = document.getElementById('themePanelVC');
-            if (panel) panel.classList.toggle('visible');
-        });
-        document.getElementById('toggleCustomizeBtnVC')?.addEventListener('click', () => {
-            const panel = document.getElementById('editorPanelVC');
-            if (panel) panel.classList.toggle('visible');
-        });
-        document.getElementById('toggleControlsBtnVC')?.addEventListener('click', () => {
-            const panel = document.getElementById('controlsPanelVC');
-            if (panel) panel.classList.toggle('visible');
-        });
-        
-        document.getElementById('demoSpendBtnVC')?.addEventListener('click', () => addSpendingVC(250));
-        document.getElementById('demoSpendFullBtnVC')?.addEventListener('click', () => addSpendingVC(250));
-        document.getElementById('resetDefaultBtnVC')?.addEventListener('click', resetToDefaultVC);
-        
-        const cardNumberInput = document.getElementById('cardNumberInputVC');
-        const cardHolderInput = document.getElementById('cardHolderInputVC');
-        const expiryInput = document.getElementById('expiryInputVC');
-        const cvvInput = document.getElementById('cvvInputVC');
-        if (cardNumberInput) cardNumberInput.addEventListener('input', () => refreshCardVC());
-        if (cardHolderInput) cardHolderInput.addEventListener('input', () => refreshCardVC());
-        if (expiryInput) expiryInput.addEventListener('input', () => refreshCardVC());
-        if (cvvInput) cvvInput.addEventListener('input', () => refreshCardVC());
-        
-        const limitSlider = document.getElementById('spendingLimitSliderVC');
-        if (limitSlider) limitSlider.addEventListener('input', (e) => setSpendingLimitVC(parseInt(e.target.value)));
-        document.querySelectorAll('.preset-btn-vc').forEach(btn => {
-            btn.addEventListener('click', () => setSpendingLimitVC(parseInt(btn.getAttribute('data-limit'))));
-        });
-        
-        const blockToggle = document.getElementById('blockCardToggleVC');
-        if (blockToggle) {
-            blockToggle.addEventListener('change', (e) => {
-                isBlockedVC = e.target.checked;
-                updateBlockedStateVC();
-            });
-        }
-    }
-    
+    // ========== UPDATE UI ==========
     function updateAllUI() {
         let acc = getCurrentAccount(); 
         if (!acc) { window.location.href = 'login.html'; return; }
         document.getElementById("mainBalance").innerHTML = `R ${acc.balance.toFixed(2)}`;
-        document.getElementById("displayCardNumber").innerText = acc.cardNumber;
-        document.getElementById("displayCardHolder").innerText = acc.name.toUpperCase();
-        document.getElementById("displayCvv").innerText = acc.cvv;
-        document.getElementById("displayExpiry").innerText = acc.expiry;
         document.getElementById("cardsDisplayCardNumber").innerText = acc.cardNumber;
         document.getElementById("cardsDisplayCardHolder").innerText = acc.name.toUpperCase();
         document.getElementById("cardsDisplayCvv").innerText = acc.cvv;
         document.getElementById("cardsDisplayExpiry").innerText = acc.expiry;
         document.getElementById("cardsCardSignature").innerText = generateSignature(acc.name);
         generateCardBackBarcode(); generateCardsCardBackBarcode();
-        document.getElementById("cardSignature").innerText = generateSignature(acc.name);
         document.getElementById("greetingName").innerHTML = `Welcome, ${acc.name.split(' ')[0]}! 👋`;
         let txContainer = document.getElementById("fullTransactionList");
-        if (txContainer) {
-            let txs = transactionsHistory[currentAccountId] || [];
-            txContainer.innerHTML = txs.map(tx => `<div class="tx-item"><div class="tx-icon"><i class="fas fa-receipt"></i></div><div class="tx-details"><div class="tx-desc">${tx.desc}</div><div class="tx-date">${tx.date}</div></div><div class="tx-amount ${tx.amount>0?'positive':'negative'}">${tx.amount>0?'+':''}R${Math.abs(tx.amount).toFixed(2)}</div></div>`).join('') || '<div style="text-align:center; padding:20px;">No transactions yet</div>';
-        }
+        if (txContainer) { let txs = transactionsHistory[currentAccountId] || []; txContainer.innerHTML = txs.map(tx => `<div class="tx-item"><div class="tx-icon"><i class="fas fa-receipt"></i></div><div class="tx-details"><div class="tx-desc">${tx.desc}</div><div class="tx-date">${tx.date}</div></div><div class="tx-amount ${tx.amount>0?'positive':'negative'}">${tx.amount>0?'+':''}R${Math.abs(tx.amount).toFixed(2)}</div></div>`).join('') || '<div style="text-align:center; padding:20px;">No transactions yet</div>'; }
         generateBarcode(); generateQRCode();
         document.getElementById('smartQueueStats').innerHTML = `Queue length: ${queues["Rands Smart Queue"].length}`;
         document.getElementById('butcherQueueStats').innerHTML = `Queue length: ${queues["Butcher Queue"].length}`;
-        updatePendingIndicator();
-        updateProfileTab();
-        if (vvipBands[acc.id]) { document.getElementById('vvipBandNumber').textContent = vvipBands[acc.id].bandId; document.getElementById('bandIdDisplay').textContent = vvipBands[acc.id].bandId; document.getElementById('bandWalletName').textContent = acc.name; } 
-        else { const band = { bandId: `VVIP-${acc.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}-${Math.floor(Math.random() * 10000)}`, accountId: acc.id, accountName: acc.name, status: "Active" }; vvipBands[acc.id] = band; localStorage.setItem(VVIP_BANDS_KEY, JSON.stringify(vvipBands)); document.getElementById('vvipBandNumber').textContent = band.bandId; document.getElementById('bandIdDisplay').textContent = band.bandId; document.getElementById('bandWalletName').textContent = acc.name; }
-        const qrContainer = document.getElementById('vvipBandQR'); if (qrContainer) { qrContainer.innerHTML = ""; new QRCode(qrContainer, { text: `VVIP:${vvipBands[acc.id].bandId}|${acc.id}|${acc.name}`, width: 120, height: 120, colorDark: "#E30613" }); }
-        renderMyTickets();
-        renderEventShop();
-        // Also update VC card details to match current account
-        const cardHolderInput = document.getElementById('cardHolderInputVC');
-        const cardNumberInput = document.getElementById('cardNumberInputVC');
-        const expiryInput = document.getElementById('expiryInputVC');
-        const cvvInput = document.getElementById('cvvInputVC');
+        updatePendingIndicator(); updateProfileTab();
+        renderMyTickets(); renderEventShop();
+        const cardHolderInput = document.getElementById('cardHolderInputVC'); const cardNumberInput = document.getElementById('cardNumberInputVC'); const expiryInput = document.getElementById('expiryInputVC'); const cvvInput = document.getElementById('cvvInputVC');
         if (cardHolderInput && acc.name) cardHolderInput.value = acc.name;
         if (cardNumberInput && acc.cardNumber) cardNumberInput.value = acc.cardNumber;
         if (expiryInput && acc.expiry) expiryInput.value = acc.expiry;
@@ -1224,50 +544,19 @@
         refreshCardVC();
     }
     
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        const activeTab = document.getElementById(tabId + 'Tab');
-        if (activeTab) activeTab.classList.add('active');
-        document.querySelectorAll('.tab-nav').forEach(nav => nav.classList.remove('active'));
-        const activeNav = document.querySelector(`.tab-nav[data-tab="${tabId}"]`);
-        if (activeNav) activeNav.classList.add('active');
-        if (tabId === 'cards') { loadManagedEvents(); loadUserTickets(); renderMyTickets(); renderEventShop(); }
-        if (tabId === 'pay') { generateBarcode(); generateQRCode(); }
-        if (tabId === 'profile') updateProfileTab();
-    }
-    
+    function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active')); const activeTab = document.getElementById(tabId + 'Tab'); if (activeTab) activeTab.classList.add('active'); document.querySelectorAll('.tab-nav').forEach(nav => nav.classList.remove('active')); const activeNav = document.querySelector(`.tab-nav[data-tab="${tabId}"]`); if (activeNav) activeNav.classList.add('active'); if (tabId === 'cards') { loadManagedEvents(); loadUserTickets(); renderMyTickets(); renderEventShop(); } if (tabId === 'pay') { generateBarcode(); generateQRCode(); } if (tabId === 'profile') updateProfileTab(); }
     window.setAddAmount = function(amt) { const input = document.getElementById("addAmountInput"); if (input) input.value = amt; };
     function switchToPOS() { window.open('Box-office.html', '_blank'); }
-    
-    function initHeaderScrollBehavior() {
-        const header = document.getElementById('movableHeaderGroup');
-        const container = document.getElementById('appMain');
-        if (!header || !container) return;
-        let lastScroll = 0;
-        container.addEventListener('scroll', () => {
-            const currentScroll = container.scrollTop;
-            if (currentScroll > lastScroll && currentScroll > 50) header.classList.add('header-hidden');
-            else if (currentScroll < lastScroll) header.classList.remove('header-hidden');
-            lastScroll = currentScroll;
-        }, { passive: true });
-    }
+    function initHeaderScrollBehavior() { const header = document.getElementById('movableHeaderGroup'); const container = document.getElementById('appMain'); if (!header || !container) return; let lastScroll = 0; container.addEventListener('scroll', () => { const currentScroll = container.scrollTop; if (currentScroll > lastScroll && currentScroll > 50) header.classList.add('header-hidden'); else if (currentScroll < lastScroll) header.classList.remove('header-hidden'); lastScroll = currentScroll; }, { passive: true }); }
+    function showLockerModal() { const modal = document.getElementById('boozeLockerModal'); const content = document.getElementById('lockerModalContent'); const userLocker = lockers.find(l => l.phone === currentAccountId && l.status === "Occupied"); if (!userLocker) { content.innerHTML = `<div style="text-align: center; padding: 30px 20px;"><i class="fas fa-box-open" style="font-size: 64px; color: #cbd5e1;"></i><h4>No Active Locker</h4><button id="goToLockerPortalBtn" style="background:#E30613; padding:10px 24px; border-radius:40px; color:white; margin-top:12px;">Store Items</button></div>`; document.getElementById('goToLockerPortalBtn')?.addEventListener('click', () => { window.open('customer-choice.html', '_blank'); modal.classList.remove('active'); }); } else { content.innerHTML = `<div><h3>Locker #${userLocker.id}</h3><p>Items stored</p><button id="requestUnlockFromModalBtn" style="background:#E30613; padding:12px; border-radius:40px; width:100%; margin-top:12px;">Request Unlock</button></div>`; document.getElementById('requestUnlockFromModalBtn')?.addEventListener('click', () => { showToastMsg("Unlock request sent"); modal.classList.remove('active'); }); } modal.classList.add('active'); }
+    function formatDate(dateString) { if (!dateString) return ''; return new Date(dateString).toLocaleDateString('en-ZA', { year:'numeric', month:'long', day:'numeric' }); }
+    function formatPrice(p) { return p.toLocaleString('en-ZA', { minimumFractionDigits:2 }); }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
     
     function init() {
         loadAccounts(); loadLockers(); loadPendingUnlocks();
         let saved = localStorage.getItem('rands_current_account');
-        if (saved && accounts.find(a => a.id === saved)) { 
-            currentAccountId = saved; 
-            loadUserTickets();
-            loadManagedEvents();
-            initVirtualCard(); // Initialize virtual card after account loaded
-            updateAllUI();
-            initHeaderScrollBehavior();
-        } else { 
-            window.location.href = 'login.html'; 
-            return;
-        }
-        
-        // Event listeners
+        if (saved && accounts.find(a => a.id === saved)) { currentAccountId = saved; loadUserTickets(); loadManagedEvents(); initVirtualCard(); updateAllUI(); initHeaderScrollBehavior(); } else { window.location.href = 'login.html'; return; }
         document.getElementById("logoutHeaderBtn")?.addEventListener("click", logout);
         document.getElementById("posModeBtn")?.addEventListener("click", switchToPOS);
         document.getElementById("profileBtn")?.addEventListener("click", () => { if(currentAccountId) switchTab('profile'); });
@@ -1283,23 +572,13 @@
         document.getElementById("balanceAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("topAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => { let amt = parseFloat(document.getElementById("addAmountInput").value); if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } } document.getElementById("addMoneyModal").classList.remove("active"); document.getElementById("addAmountInput").value = ""; });
-        document.getElementById("requestPaymentBtn")?.addEventListener("click", () => { if(!currentAccountId) { window.location.href = 'login.html'; return; } document.getElementById("receiveAccountIdText").innerText = currentAccountId; document.getElementById("receivePaymentModal").classList.add("active"); const receiveQrDiv = document.getElementById("receiveQrCode"); receiveQrDiv.innerHTML = ""; new QRCode(receiveQrDiv, { text: currentAccountId, width: 150, height: 150, colorDark: "#E30613" }); });
-        document.getElementById("closeReceiveModalBtn")?.addEventListener("click", () => document.getElementById("receivePaymentModal").classList.remove("active"));
-        document.getElementById("copyAccountIdBtn")?.addEventListener("click", () => { navigator.clipboard.writeText(currentAccountId || ""); showToastMsg("Account ID copied!"); });
+        // New Pay button action - opens the Pay tab
+        document.getElementById("payNowActionBtn")?.addEventListener("click", () => { if(currentAccountId) switchTab('pay'); else window.location.href = 'login.html'; });
         document.getElementById("cardsCardFlipWrapper")?.addEventListener("click", () => document.getElementById("cardsCardFlipWrapper").classList.toggle("flipped"));
-        
-        document.querySelectorAll(".tab-nav").forEach(tab => {
-            tab.addEventListener("click", (e) => {
-                e.preventDefault();
-                const tabId = tab.getAttribute("data-tab");
-                if (currentAccountId && tabId) switchTab(tabId);
-            });
-        });
-        
+        document.querySelectorAll(".tab-nav").forEach(tab => { tab.addEventListener("click", (e) => { e.preventDefault(); const tabId = tab.getAttribute("data-tab"); if (currentAccountId && tabId) switchTab(tabId); }); });
         document.getElementById("joinSmartQueueBtn")?.addEventListener("click", () => showToastMsg("Joined Smart Queue - Position: 3"));
         document.getElementById("joinButcherQueueBtn")?.addEventListener("click", () => showToastMsg("Joined Butcher Queue - Position: 2"));
         document.getElementById("ticketsQuickItem")?.addEventListener("click", () => { if(currentAccountId) switchTab('cards'); });
-        document.getElementById("printVVIPBandBtn")?.addEventListener("click", () => showToastMsg("VVIP band printed"));
         document.getElementById("boozeLockerItem")?.addEventListener("click", () => { if(currentAccountId) showLockerModal(); else window.location.href = 'login.html'; });
         document.getElementById("closeBoozeLockerModalBtn")?.addEventListener("click", () => document.getElementById("boozeLockerModal").classList.remove("active"));
         document.getElementById("storeMoreItemsBtn")?.addEventListener("click", () => { window.open('customer-choice.html', '_blank'); document.getElementById("boozeLockerModal").classList.remove("active"); });
@@ -1316,34 +595,12 @@
         document.getElementById("downloadAllStatementBtn")?.addEventListener("click", () => showToastMsg("Statement downloaded"));
         document.getElementById("payTabPayNowBtn")?.addEventListener("click", () => { if(currentAccountId) { showToastMsg("🔐 Opening payment scanner..."); setTimeout(() => { showToastMsg("💰 Payment of R150.00 requested"); let payments = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); payments.push({ id: Date.now(), targetAccount: currentAccountId, amount: 150, description: "Payment to Rands Kiosk", status: 'pending', type: 'payment' }); localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(payments)); }, 500); } else window.location.href = 'login.html'; });
         document.getElementById("refreshEventsBtn")?.addEventListener("click", () => { loadManagedEvents(); showToastMsg("Events refreshed"); });
-        
         setInterval(() => { if(currentAccountId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const pending = requests.filter(r => r.targetAccount === currentAccountId && r.status === 'pending' && r.type !== 'locker_unlock'); if(pending.length && !document.getElementById("paymentApprovalModal").classList.contains('active')) { const latest = pending[pending.length-1]; document.getElementById("approvalAmount").innerHTML = `R${latest.amount.toFixed(2)}`; document.getElementById("approvalDesc").innerHTML = latest.description; document.getElementById("paymentApprovalModal").setAttribute('data-request-id', latest.id); document.getElementById("paymentApprovalModal").classList.add('active'); } } }, 3000);
         setInterval(() => { if(currentAccountId) { loadLockers(); loadPendingUnlocks(); loadManagedEvents(); loadUserTickets(); updateAllUI(); } }, 5000);
-        
         document.getElementById("acceptPaymentBtn")?.addEventListener("click", () => { const modal = document.getElementById("paymentApprovalModal"); const requestId = modal.getAttribute('data-request-id'); if(requestId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const req = requests.find(r => r.id == requestId); if(req && getCurrentAccount().balance >= req.amount) { getCurrentAccount().balance -= req.amount; saveAccounts(); addTransaction(req.description, -req.amount); req.status = 'completed'; localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(requests)); showToastMsg("Payment approved"); modal.classList.remove("active"); updateAllUI(); } else showToastMsg("Insufficient balance"); } });
         document.getElementById("rejectPaymentBtn")?.addEventListener("click", () => { const modal = document.getElementById("paymentApprovalModal"); const requestId = modal.getAttribute('data-request-id'); if(requestId) { const requests = JSON.parse(localStorage.getItem(PAYMENT_REQUESTS_KEY) || '[]'); const req = requests.find(r => r.id == requestId); if(req) { req.status = 'rejected'; localStorage.setItem(PAYMENT_REQUESTS_KEY, JSON.stringify(requests)); showToastMsg("Payment rejected"); } modal.classList.remove("active"); } });
-        
         switchTab('home');
     }
-    
-    function showLockerModal() {
-        const modal = document.getElementById('boozeLockerModal');
-        const content = document.getElementById('lockerModalContent');
-        const userLocker = lockers.find(l => l.phone === currentAccountId && l.status === "Occupied");
-        if (!userLocker) {
-            content.innerHTML = `<div style="text-align: center; padding: 30px 20px;"><i class="fas fa-box-open" style="font-size: 64px; color: #cbd5e1;"></i><h4>No Active Locker</h4><button id="goToLockerPortalBtn" style="background:#E30613; padding:10px 24px; border-radius:40px; color:white; margin-top:12px;">Store Items</button></div>`;
-            document.getElementById('goToLockerPortalBtn')?.addEventListener('click', () => { window.open('customer-choice.html', '_blank'); modal.classList.remove('active'); });
-        } else {
-            content.innerHTML = `<div><h3>Locker #${userLocker.id}</h3><p>Items stored</p><button id="requestUnlockFromModalBtn" style="background:#E30613; padding:12px; border-radius:40px; width:100%; margin-top:12px;">Request Unlock</button></div>`;
-            document.getElementById('requestUnlockFromModalBtn')?.addEventListener('click', () => { showToastMsg("Unlock request sent"); modal.classList.remove('active'); });
-        }
-        modal.classList.add('active');
-    }
-    
-    function formatDate(dateString) { if (!dateString) return ''; return new Date(dateString).toLocaleDateString('en-ZA', { year:'numeric', month:'long', day:'numeric' }); }
-    function formatPrice(p) { return p.toLocaleString('en-ZA', { minimumFractionDigits:2 }); }
-    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-    
     init();
 </script>
 </body>
