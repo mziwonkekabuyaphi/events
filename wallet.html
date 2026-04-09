@@ -544,7 +544,17 @@
         refreshCardVC();
     }
     
-    function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active')); const activeTab = document.getElementById(tabId + 'Tab'); if (activeTab) activeTab.classList.add('active'); document.querySelectorAll('.tab-nav').forEach(nav => nav.classList.remove('active')); const activeNav = document.querySelector(`.tab-nav[data-tab="${tabId}"]`); if (activeNav) activeNav.classList.add('active'); if (tabId === 'cards') { loadManagedEvents(); loadUserTickets(); renderMyTickets(); renderEventShop(); } if (tabId === 'pay') { generateBarcode(); generateQRCode(); } if (tabId === 'profile') updateProfileTab(); }
+    function switchTab(tabId) { 
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active')); 
+        const activeTab = document.getElementById(tabId + 'Tab'); 
+        if (activeTab) activeTab.classList.add('active'); 
+        document.querySelectorAll('.tab-nav').forEach(nav => nav.classList.remove('active')); 
+        const activeNav = document.querySelector(`.tab-nav[data-tab="${tabId}"]`); 
+        if (activeNav) activeNav.classList.add('active'); 
+        if (tabId === 'cards') { loadManagedEvents(); loadUserTickets(); renderMyTickets(); renderEventShop(); } 
+        if (tabId === 'pay') { generateBarcode(); generateQRCode(); } 
+        if (tabId === 'profile') updateProfileTab(); 
+    }
     window.setAddAmount = function(amt) { const input = document.getElementById("addAmountInput"); if (input) input.value = amt; };
     function switchToPOS() { window.open('Box-office.html', '_blank'); }
     function initHeaderScrollBehavior() { const header = document.getElementById('movableHeaderGroup'); const container = document.getElementById('appMain'); if (!header || !container) return; let lastScroll = 0; container.addEventListener('scroll', () => { const currentScroll = container.scrollTop; if (currentScroll > lastScroll && currentScroll > 50) header.classList.add('header-hidden'); else if (currentScroll < lastScroll) header.classList.remove('header-hidden'); lastScroll = currentScroll; }, { passive: true }); }
@@ -572,10 +582,16 @@
         document.getElementById("balanceAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("topAddMoneyBtn")?.addEventListener("click", () => document.getElementById("addMoneyModal").classList.add("active"));
         document.getElementById("closeAddMoneyBtn")?.addEventListener("click", () => { let amt = parseFloat(document.getElementById("addAmountInput").value); if(amt && amt>0 && currentAccountId) { let acc = getCurrentAccount(); if(acc) { acc.balance += amt; saveAccounts(); addTransaction(`Added R${amt}`, amt); showToastMsg(`R${amt} added!`); } } document.getElementById("addMoneyModal").classList.remove("active"); document.getElementById("addAmountInput").value = ""; });
-        // New Pay button action - opens the Pay tab
         document.getElementById("payNowActionBtn")?.addEventListener("click", () => { if(currentAccountId) switchTab('pay'); else window.location.href = 'login.html'; });
         document.getElementById("cardsCardFlipWrapper")?.addEventListener("click", () => document.getElementById("cardsCardFlipWrapper").classList.toggle("flipped"));
-        document.querySelectorAll(".tab-nav").forEach(tab => { tab.addEventListener("click", (e) => { e.preventDefault(); const tabId = tab.getAttribute("data-tab"); if (currentAccountId && tabId) switchTab(tabId); }); });
+        // Fixed bottom tab navigation
+        document.querySelectorAll(".tab-nav").forEach(tab => { 
+            tab.addEventListener("click", (e) => { 
+                e.preventDefault(); 
+                const tabId = tab.getAttribute("data-tab"); 
+                if (currentAccountId && tabId) switchTab(tabId); 
+            }); 
+        });
         document.getElementById("joinSmartQueueBtn")?.addEventListener("click", () => showToastMsg("Joined Smart Queue - Position: 3"));
         document.getElementById("joinButcherQueueBtn")?.addEventListener("click", () => showToastMsg("Joined Butcher Queue - Position: 2"));
         document.getElementById("ticketsQuickItem")?.addEventListener("click", () => { if(currentAccountId) switchTab('cards'); });
