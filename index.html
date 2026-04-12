@@ -402,6 +402,7 @@
             color: white;
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -411,19 +412,31 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             width: 90%;
             max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
             background: white;
             border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-header {
@@ -433,10 +446,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 30px 30px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .modal-header h2 {
             font-size: 24px;
+            font-weight: 700;
         }
 
         .close-modal {
@@ -448,6 +466,15 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
         }
 
         .modal-body {
@@ -455,52 +482,75 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #1e293b;
+            font-size: 14px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
 
         .ticket-pricing {
-            background: #fef2f2;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #fef2f2, #fff5f5);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 24px 0;
+            border: 1px solid rgba(220, 38, 38, 0.15);
         }
 
         .ticket-pricing h3 {
             color: #dc2626;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .ticket-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 16px;
+            margin-bottom: 16px;
             align-items: center;
             background: white;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .ticket-row:hover {
+            border-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
         }
 
         .ticket-row .ticket-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #dc2626;
+            font-size: 14px;
         }
 
         .price-input {
@@ -511,8 +561,14 @@
             width: 100%;
             padding: 10px 12px;
             padding-left: 28px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .price-input input:focus {
+            border-color: #dc2626;
+            outline: none;
         }
 
         .price-input::before {
@@ -523,23 +579,32 @@
             transform: translateY(-50%);
             color: #dc2626;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
+            z-index: 1;
         }
 
         .capacity-input input {
             width: 100%;
             padding: 10px 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .capacity-input input:focus {
+            border-color: #dc2626;
+            outline: none;
         }
 
         .total-capacity {
-            background: #dc2626;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
             color: white;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 16px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         .submit-btn {
@@ -548,11 +613,49 @@
             background: linear-gradient(135deg, #dc2626, #b91c1c);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 24px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .image-upload {
+            transition: all 0.2s;
+        }
+
+        .image-upload:hover {
+            border-color: #dc2626 !important;
+            background: #fff5f5 !important;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
         .toast {
@@ -569,6 +672,7 @@
             transition: transform 0.3s;
             z-index: 1100;
             border-left: 4px solid #dc2626;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .toast.show {
@@ -591,31 +695,21 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.2s;
         }
 
-        .image-preview {
-            margin-top: 15px;
-            position: relative;
-        }
-
-        .remove-image {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #dc2626;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
+        .export-btn:hover {
+            background: #374151;
+            transform: translateY(-1px);
         }
 
         @media (max-width: 768px) {
             body { padding: 15px; }
             .events-grid { grid-template-columns: 1fr; }
-            .ticket-row { grid-template-columns: 1fr; gap: 8px; }
+            .ticket-row { grid-template-columns: 1fr; gap: 12px; }
             .sell-controls { margin-left: 0; margin-top: 5px; }
+            .modal-body { padding: 20px; }
+            .modal-header { padding: 20px; }
         }
     </style>
 </head>
@@ -659,10 +753,11 @@
             <div class="modal-header"><h2 id="modalTitle">Create New Event</h2><button class="close-modal" onclick="closeModal()">&times;</button></div>
             <div class="modal-body">
                 <form id="eventForm">
-                    <input type="hidden" id="eventId"><input type="hidden" id="eventImageData">
+                    <input type="hidden" id="eventId">
+                    <input type="hidden" id="eventImageData">
                     <div class="form-group"><label>Event Name *</label><input type="text" id="eventName" required placeholder="Enter event name"></div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group"><label>Event Date *</label><input type="date" id="eventDate" required></div>
+                        <div class="form-group"><label>Event Date *</label><input type="date" id="eventDate" required min=""></div>
                         <div class="form-group"><label>Event Time *</label><input type="time" id="eventTime" required></div>
                     </div>
                     <div class="form-group"><label>Location / Venue *</label><input type="text" id="eventLocation" required value="Rands Cape Town"></div>
@@ -687,7 +782,6 @@
                         <div class="ticket-row"><div class="ticket-label">👑 VIP Experience</div><div class="price-input"><input type="number" id="vipPrice" placeholder="Price" min="0" step="0.01"></div><div class="capacity-input"><input type="number" id="vipCapacity" placeholder="Capacity" min="0"></div></div>
                         <div class="total-capacity" id="totalCapacityDisplay">Total Capacity: 0</div>
                     </div>
-                    <div class="form-group"><label>Event Status</label><select id="eventStatus"><option value="upcoming">Upcoming</option><option value="active" selected>Active</option><option value="ended">Ended</option></select></div>
                     <button type="button" class="submit-btn" onclick="saveEvent()">Save Event</button>
                 </form>
             </div>
@@ -712,11 +806,31 @@
         let currentViewEvent = null;
         let pendingTicketAction = null;
 
+        // Helper function to determine event status based on current date/time
+        function getEventStatus(eventDate, eventTime) {
+            const eventDateTime = new Date(`${eventDate}T${eventTime}`);
+            const now = new Date();
+            if (eventDateTime < now) {
+                return 'ended';
+            } else {
+                return 'upcoming';
+            }
+        }
+
         function loadEvents() {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) events = JSON.parse(stored);
             else events = [];
-            saveEvents();
+            // Auto-update statuses for existing events based on current time
+            let needsUpdate = false;
+            events.forEach(event => {
+                const newStatus = getEventStatus(event.date, event.time);
+                if (event.status !== newStatus) {
+                    event.status = newStatus;
+                    needsUpdate = true;
+                }
+            });
+            if (needsUpdate) saveEvents();
             renderEvents();
             updateStats();
         }
@@ -733,13 +847,18 @@
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', updateTotalCapacity);
             });
-            // Fallback for logo if image fails to load
             const logoImg = document.querySelector('.logo img');
             if (logoImg) {
                 logoImg.onerror = () => {
                     logoImg.style.display = 'none';
                     document.getElementById('fallbackLogo').style.display = 'flex';
                 };
+            }
+            // Set min date to today for date picker
+            const dateInput = document.getElementById('eventDate');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.setAttribute('min', today);
             }
         });
 
@@ -810,7 +929,6 @@
             }).join('');
         }
 
-        // Ticket action with confirmation
         function openTicketActionModal(eventId, ticketType, delta) {
             const event = events.find(e => e.id === eventId);
             if (!event) return;
@@ -860,6 +978,7 @@
             const newDate = new Date(original.date);
             newDate.setDate(newDate.getDate() + 7);
             newEvent.date = newDate.toISOString().split('T')[0];
+            newEvent.status = getEventStatus(newEvent.date, newEvent.time);
             events.push(newEvent);
             saveEvents();
             renderEvents();
@@ -895,7 +1014,7 @@
 
         function updateStats() {
             document.getElementById('totalEvents').textContent = events.length;
-            document.getElementById('activeEvents').textContent = events.filter(e => e.status === 'active').length;
+            document.getElementById('activeEvents').textContent = events.filter(e => e.status === 'upcoming' || e.status === 'active').length;
             let totalTickets = 0, totalRevenue = 0;
             events.forEach(e => {
                 totalTickets += e.ticketTypes.earlyBird.sold + e.ticketTypes.general.sold + e.ticketTypes.vip.sold;
@@ -911,7 +1030,6 @@
             const date = document.getElementById('eventDate').value;
             const time = document.getElementById('eventTime').value;
             const location = document.getElementById('eventLocation').value;
-            const status = document.getElementById('eventStatus').value;
             const imageData = document.getElementById('eventImageData').value;
             let earlyPrice = parseFloat(document.getElementById('earlyBirdPrice').value) || 0;
             let earlyCapacity = parseInt(document.getElementById('earlyBirdCapacity').value) || 0;
@@ -919,9 +1037,20 @@
             let generalCapacity = parseInt(document.getElementById('generalCapacity').value) || 0;
             let vipPrice = parseFloat(document.getElementById('vipPrice').value) || 0;
             let vipCapacity = parseInt(document.getElementById('vipCapacity').value) || 0;
+            
             if (!name) { showToast('Please enter event name', 'error'); return; }
             if (!date) { showToast('Please select event date', 'error'); return; }
             if (!time) { showToast('Please select event time', 'error'); return; }
+            
+            // Validate that date is not in the past
+            const selectedDateTime = new Date(`${date}T${time}`);
+            const now = new Date();
+            if (selectedDateTime < now) {
+                showToast('Cannot create an event in the past. Please select a future date and time.', 'error');
+                return;
+            }
+            
+            const status = getEventStatus(date, time);
             
             if (eventId) {
                 const existing = events.find(e => e.id === eventId);
@@ -931,6 +1060,7 @@
                     if (vipCapacity < existing.ticketTypes.vip.sold) { showToast(`VIP capacity cannot be less than already sold (${existing.ticketTypes.vip.sold})`, 'error'); return; }
                 }
             }
+            
             const newEvent = {
                 id: eventId || 'evt_' + Date.now(),
                 name, date, time, location, status, imageData: imageData || null,
@@ -940,6 +1070,7 @@
                     vip: { price: vipPrice, capacity: vipCapacity, sold: 0 }
                 }
             };
+            
             if (eventId) {
                 const existing = events.find(e => e.id === eventId);
                 if (existing) {
@@ -986,15 +1117,16 @@
             document.getElementById('eventForm').reset();
             document.getElementById('eventId').value = '';
             document.getElementById('eventLocation').value = 'Rands Cape Town';
-            document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('eventDate').value = tomorrow.toISOString().split('T')[0];
             document.getElementById('eventTime').value = '18:00';
-            document.getElementById('eventStatus').value = 'active';
             document.getElementById('earlyBirdCapacity').value = 100;
             document.getElementById('generalCapacity').value = 300;
             document.getElementById('vipCapacity').value = 50;
             updateTotalCapacity();
             removeImage();
-            document.getElementById('eventModal').style.display = 'block';
+            document.getElementById('eventModal').style.display = 'flex';
         }
 
         function openEditModal(eventId) {
@@ -1006,7 +1138,6 @@
                 document.getElementById('eventDate').value = event.date;
                 document.getElementById('eventTime').value = event.time;
                 document.getElementById('eventLocation').value = event.location;
-                document.getElementById('eventStatus').value = event.status;
                 document.getElementById('earlyBirdPrice').value = event.ticketTypes.earlyBird.price;
                 document.getElementById('earlyBirdCapacity').value = event.ticketTypes.earlyBird.capacity;
                 document.getElementById('generalPrice').value = event.ticketTypes.general.price;
@@ -1019,7 +1150,7 @@
                     document.getElementById('imagePreview').style.display = 'block';
                     document.getElementById('eventImageData').value = event.imageData;
                 } else removeImage();
-                document.getElementById('eventModal').style.display = 'block';
+                document.getElementById('eventModal').style.display = 'flex';
             }
         }
 
@@ -1027,7 +1158,7 @@
             deleteId = eventId;
             const event = events.find(e => e.id === eventId);
             document.getElementById('deleteEventName').innerHTML = `Are you sure you want to delete "<strong>${escapeHtml(event?.name || 'this event')}</strong>"?`;
-            document.getElementById('deleteModal').style.display = 'block';
+            document.getElementById('deleteModal').style.display = 'flex';
         }
 
         function confirmDelete() {
@@ -1041,7 +1172,6 @@
             }
         }
 
-        // Simple image upload (no crop)
         function handleImageUpload(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
@@ -1071,6 +1201,23 @@
         function closeViewModal() { document.getElementById('viewModal').style.display = 'none'; }
         function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; deleteId=null; }
         window.onclick = function(e) { if(e.target.classList.contains('modal')) closeModal(); if(e.target.id==='viewModal') closeViewModal(); if(e.target.id==='deleteModal') closeDeleteModal(); if(e.target.id==='ticketActionModal') closeTicketActionModal(); }
+        
+        // Auto-refresh event statuses every minute to keep them updated
+        setInterval(() => {
+            let needsUpdate = false;
+            events.forEach(event => {
+                const newStatus = getEventStatus(event.date, event.time);
+                if (event.status !== newStatus) {
+                    event.status = newStatus;
+                    needsUpdate = true;
+                }
+            });
+            if (needsUpdate) {
+                saveEvents();
+                renderEvents();
+            }
+        }, 60000);
+        
         loadEvents();
     </script>
 </body>
